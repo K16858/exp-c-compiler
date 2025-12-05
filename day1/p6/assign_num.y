@@ -5,16 +5,16 @@
     extern int yyerror();
 %}
 
-%token IDENT SEMIC ASSIGN NUMBER
-
 %union{
     int num;
     char* str;
 }
 
+%token <str>IDENT SEMIC ASSIGN <num>NUMBER
+
 %%
 statement
-    : IDENT ASSIGN NUMBER SEMIC {printf("OK!\n");}
+    : IDENT ASSIGN NUMBER SEMIC {printf("OK! ident=%s, num=%d\n", $1, $3);}
 ;
 %%
 int main(void) {

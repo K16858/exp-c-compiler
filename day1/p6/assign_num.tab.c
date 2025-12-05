@@ -1055,7 +1055,7 @@ yyreduce:
     {
   case 2: /* statement: IDENT ASSIGN NUMBER SEMIC  */
 #line 17 "assign_num.y"
-                                {printf("OK!\n");}
+                                {printf("OK! ident=%s, num=%d\n", (yyvsp[-3].str), (yyvsp[-1].num));}
 #line 1060 "assign_num.tab.c"
     break;
 

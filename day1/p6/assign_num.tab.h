@@ -66,7 +66,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 10 "assign_num.y"
+#line 8 "assign_num.y"
 
     int num;
     char* str;
