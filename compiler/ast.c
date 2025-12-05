@@ -40,11 +40,28 @@ Node *build_node2(NType t, Node *p1, Node *p2) {
 }
 
 char *node_types[] = {
-    "IDENT_AST",
-    "IDENTS_AST",
-    "NUMBER_AST",
-    "STATEMENTS_AST",
-    "STATEMENT_AST",
+    "IDENT",
+    "IDENTS",
+    "NUMBER",
+    "ADD_OP",
+    "MUL_OP",
+    "COND_OP",
+    "VAR",
+    "ARRAY",
+    "CONDITION",
+    "FACTOR",
+    "TERM",
+    "EXPRESSION",
+    "DECLARATIONS",
+    "STATEMENTS",
+    "STATEMENT",
+    "ASSIGNMENT_STATEMENT",
+    "LOOP_STATEMENT",
+    "IF_STATEMENT",
+    "DECL_STATEMENT",
+    "DECL_FUNCTION",
+    "FUNCTION",
+    "PROGRAM"
 };
 
 void print_node_type(int node_type) {
