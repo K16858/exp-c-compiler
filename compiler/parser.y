@@ -1,0 +1,88 @@
+%{
+    #include <stdio.h>
+    #include "parser.tab.h"
+    extern int yylex();
+    extern int yyerror();
+%}
+
+%union{
+    int num;
+    char* str;
+}
+
+%token DEFINE ARRAY IF ELSE LOOP L_PARAN R_PARAN L_BRACKET R_BRACKET L_BRACE R_BRACE EQ LT GT SEMIC ASSIGN ADD SUB MUL DIV IDENT NUMBER COMMA
+
+%define parse.error verbose
+
+%%
+program
+    : declarations statements 
+;
+declarations
+    : decl_statement declarations
+    | decl_statement
+;
+statements
+    : statement statements 
+    | statement
+statement
+    : assignment_statement
+    | loop_statement
+    | if_statement
+;
+loop_statement
+    : LOOP L_PARAN condition R_PARAN L_BRACE statements R_BRACE
+;
+if_statement
+    : IF L_PARAN condition R_PARAN L_BRACE statements R_BRACE 
+    | IF L_PARAN condition R_PARAN L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE
+;
+decl_statement
+    : DEFINE IDENT SEMIC
+    | ARRAY array SEMIC
+;
+var
+    : IDENT
+    | NUMBER
+    | array
+;
+array
+    : IDENT L_BRACKET expression R_BRACKET
+    | array L_BRACKET expression R_BRACKET
+;
+condition
+    : expression cond_op expression
+;
+assignment_statement
+    : IDENT ASSIGN expression SEMIC
+    | IDENT array ASSIGN expression
+;
+expression
+    : expression add_op term
+    | term
+;
+term
+    : term mul_op factor
+    | factor
+;
+factor
+    : var
+    | L_PARAN expression R_PARAN
+;
+add_op
+    : ADD | SUB
+;
+mul_op
+    : MUL | DIV
+;
+cond_op
+    : EQ | LT | GT
+;
+%%
+int main(void) {
+    if (yyparse()) {
+        fprintf(stderr, "Error!\n");
+        return 1;
+    }
+    return 0;
+}
