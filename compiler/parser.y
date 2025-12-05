@@ -3,16 +3,16 @@
     #include "parser.tab.h"
     extern int yylex();
     extern int yyerror();
+    extern Node *top;
 %}
 
 %union{
-    int num;
-    char* str;
+    struct node *np;
+    char *sp;
+    int ival;
 }
 
 %token DEFINE ARRAY IF ELSE LOOP L_PARAN R_PARAN L_BRACKET R_BRACKET L_BRACE R_BRACE EQ LT GT SEMIC ASSIGN ADD SUB MUL DIV IDENT NUMBER COMMA FUNCTION
-
-%define parse.error verbose
 
 %%
 program
@@ -87,10 +87,3 @@ cond_op
     : EQ | LT | GT
 ;
 %%
-int main(void) {
-    if (yyparse()) {
-        fprintf(stderr, "Error!\n");
-        return 1;
-    }
-    return 0;
-}
