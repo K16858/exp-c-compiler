@@ -5,11 +5,27 @@ extern int yyerror();
 
 // ノードタイプ
 typedef enum{
-    IDENT_AST=0,
-    IDENTS_AST,
-    NUMBER_AST,
-    STATEMENTS_AST,
-    STATEMENT_AST,
+    IDENT=0,
+    IDENTS,
+    NUMBER,
+    ADD_OP,
+    MUL_OP,
+    COND_OP,
+    VAR,
+    ARRAY,
+    CONDITION,
+    FACTOR,
+    TERM,
+    EXPRESSION,
+    DECLARATIONS,
+    STATEMENTS,
+    STATEMENT,
+    ASSIGNMENT_STATEMENT,
+    LOOP_STATEMENT,
+    IF_STATEMENT,
+    DECL_STATEMENT,
+    DECL_FUNCTION,
+    FUNCTION,s
 } NType;
 
 // 抽象構文木のノードのデータ構造

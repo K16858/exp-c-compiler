@@ -13,13 +13,16 @@
 }
 
 %token DEFINE ARRAY IF ELSE LOOP L_PARAN R_PARAN L_BRACKET R_BRACKET L_BRACE R_BRACE EQ LT GT SEMIC ASSIGN ADD SUB MUL DIV IDENT NUMBER COMMA FUNCTION
+%type <sp> program decl_function function declarations statements statement loop_statement if_statement decl_statement var array condition assignment_statement expression term factor add_op mul_op cond_op
 
 %%
 program
-    : declarations statements 
+    : declarations statements
+    {top = build_node2(STATEMENTS_AST, $1, top);}
 ;
 decl_function
     : FUNCTION IDENT L_PARAN IDENT R_PARAN L_BRACE statements R_BRACE
+    {$$ = build_node2(STATEMENTS_AST, $1, top);}
 ;
 function
     : IDENT L_PARAN var R_PARAN
@@ -31,6 +34,7 @@ declarations
 statements
     : statement statements 
     | statement
+;
 statement
     : assignment_statement
     | loop_statement
