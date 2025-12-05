@@ -22,41 +22,59 @@ program
 ;
 decl_function
     : FUNCTION IDENT L_PARAN IDENT R_PARAN L_BRACE statements R_BRACE
-    {$$ = build_node2(STATEMENTS_AST, $1, top);}
+    {$$ = build_node2(DECL_FUNCTION, build_node0(IDENT), $7);}
 ;
 function
     : IDENT L_PARAN var R_PARAN
+    {$$ = build_node1(FUNCTION, $3);}
 ;
 declarations
     : decl_statement declarations
+    {$$ = build_node2(DECLARATIONS, $1, $$);}
     | decl_statement
+    {$$ = build_node1(DECLARATIONS, $1);}
 ;
 statements
     : statement statements 
+    {$$ = build_node2(STATEMENTS, $1, $$);}
     | statement
+    {$$ = build_node1(STATEMENTS, $1);}
 ;
 statement
     : assignment_statement
+    {$$ = build_node1(STATEMENT, $1);}
     | loop_statement
+    {$$ = build_node1(STATEMENT, $1);}    
     | if_statement
+    {$$ = build_node1(STATEMENT, $1);}
     | decl_function
+    {$$ = build_node1(STATEMENT, $1);}
     | function
+    {$$ = build_node1(STATEMENT, $1);}
 ;
 loop_statement
     : LOOP L_PARAN condition R_PARAN L_BRACE statements R_BRACE
+    {$$ = build_node2(LOOP_STATEMENT, $3, $6);}
 ;
 if_statement
     : IF L_PARAN condition R_PARAN L_BRACE statements R_BRACE 
+    {$$ = build_node2(IF_STATEMENT, $3, $6);}
     | IF L_PARAN condition R_PARAN L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE
+    /* TODO */
 ;
 decl_statement
     : DEFINE IDENT SEMIC
+    {$$ = build_node1(DECL_STATEMENT, build_node0(IDENT));}
     | ARRAY array SEMIC
+    {$$ = build_node1(DECL_STATEMENT, $2);}
 ;
 var
     : IDENT
+    {$$ = build_node1(VAR, build_node0(IDENT));}
     | NUMBER
+    {$$ = build_node1(VAR, build_node0(NUMBER));}    
     | array
+    {$$ = build_node1(VAR, $1);}    
 ;
 array
     : IDENT L_BRACKET expression R_BRACKET
