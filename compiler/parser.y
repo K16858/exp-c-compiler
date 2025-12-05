@@ -18,7 +18,7 @@
 %%
 program
     : declarations statements
-    {top = build_node2(STATEMENTS_AST, $1, top);}
+    {top = build_node2(PROGRAM, $1, top);}
 ;
 decl_function
     : FUNCTION IDENT L_PARAN IDENT R_PARAN L_BRACE statements R_BRACE

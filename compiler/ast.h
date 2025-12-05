@@ -25,7 +25,8 @@ typedef enum{
     IF_STATEMENT,
     DECL_STATEMENT,
     DECL_FUNCTION,
-    FUNCTION,s
+    FUNCTION,
+    PROGRAM
 } NType;
 
 // 抽象構文木のノードのデータ構造
