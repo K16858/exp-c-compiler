@@ -14,6 +14,6 @@ define              {return DEFINE;}
 
 [0-9]+          {yylval.num = atoi(yytext); return NUMBER;}
 [ \t]+
-\n                       {return 0;}
+\n
 .                {return yytext[0];}
 %%
