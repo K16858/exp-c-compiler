@@ -10,13 +10,19 @@
     char* str;
 }
 
-%token DEFINE ARRAY IF ELSE LOOP L_PARAN R_PARAN L_BRACKET R_BRACKET L_BRACE R_BRACE EQ LT GT SEMIC ASSIGN ADD SUB MUL DIV IDENT NUMBER COMMA
+%token DEFINE ARRAY IF ELSE LOOP L_PARAN R_PARAN L_BRACKET R_BRACKET L_BRACE R_BRACE EQ LT GT SEMIC ASSIGN ADD SUB MUL DIV IDENT NUMBER COMMA FUNCTION
 
 %define parse.error verbose
 
 %%
 program
     : declarations statements 
+;
+decl_function
+    : FUNCTION IDENT L_PARAN IDENT R_PARAN L_BRACE statements R_BRACE
+;
+function
+    : IDENT L_PARAN var R_PARAN
 ;
 declarations
     : decl_statement declarations
@@ -29,6 +35,8 @@ statement
     : assignment_statement
     | loop_statement
     | if_statement
+    | decl_function
+    | function
 ;
 loop_statement
     : LOOP L_PARAN condition R_PARAN L_BRACE statements R_BRACE

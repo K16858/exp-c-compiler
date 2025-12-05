@@ -76,7 +76,8 @@ extern int yydebug;
     DIV = 277,                     /* DIV  */
     IDENT = 278,                   /* IDENT  */
     NUMBER = 279,                  /* NUMBER  */
-    COMMA = 280                    /* COMMA  */
+    COMMA = 280,                   /* COMMA  */
+    FUNCTION = 281                 /* FUNCTION  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -90,7 +91,7 @@ union YYSTYPE
     int num;
     char* str;
 
-#line 94 "parser.tab.h"
+#line 95 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
