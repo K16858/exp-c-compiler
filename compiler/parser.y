@@ -18,7 +18,7 @@
 %%
 program
     : declarations statements
-    {top = build_node2(PROGRAM, $1, top);}
+    {top = build_node2(PROGRAM, $1, $2);}
 ;
 decl_function
     : FUNCTION IDENT L_PARAN IDENT R_PARAN L_BRACE statements R_BRACE
@@ -60,7 +60,7 @@ if_statement
     : IF L_PARAN condition R_PARAN L_BRACE statements R_BRACE 
     {$$ = build_node2(IF_STATEMENT, $3, $6);}
     | IF L_PARAN condition R_PARAN L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE
-    /* TODO */
+    {$$ = build_node2(IF_STATEMENT, $3, build_node2(STATEMENTS, $6, $10));}
 ;
 decl_statement
     : DEFINE IDENT SEMIC
@@ -78,34 +78,56 @@ var
 ;
 array
     : IDENT L_BRACKET expression R_BRACKET
+    {$$ = build_node2(ARRAY, build_node0(IDENT), build_node1(EXPRESSION, $3));}
     | array L_BRACKET expression R_BRACKET
+    {$$ = build_node2(ARRAY, $1, build_node1(EXPRESSION, $3));}
 ;
 condition
     : expression cond_op expression
+    {$$ = build_node2(CONDITION, $2, build_node2(EXPRESSION, build_node1(EXPRESSION, $1), build_node1(EXPRESSION, $3)));}
 ;
 assignment_statement
     : IDENT ASSIGN expression SEMIC
-    | IDENT array ASSIGN expression
+    {$$ = build_node2(ASSIGNMENT_STATEMENT, build_node0(IDENT), $3);}
+    | array ASSIGN expression SEMIC
+    {$$ = build_node2(ASSIGNMENT_STATEMENT, $1, $3);}
 ;
 expression
     : expression add_op term
+    {$$ = build_node2($2, $1, $3);}
     | term
+    {$$ = $1;}
 ;
 term
     : term mul_op factor
+    {$$ = build_node2($2, $1, $3);}
     | factor
+    {$$ = $1;}
 ;
 factor
     : var
+    {$$ = $1;}
     | L_PARAN expression R_PARAN
+    {$$ = $2;}
 ;
 add_op
-    : ADD | SUB
+    : ADD
+    {$$ = build_node0(ADD_OP);}
+    | SUB
+    {$$ = build_node0(ADD_OP);}
 ;
 mul_op
-    : MUL | DIV
+    : MUL
+    {$$ = build_node0(MUL_OP);}
+    | DIV
+    {$$ = build_node0(MUL_OP);}
 ;
 cond_op
-    : EQ | LT | GT
+    : EQ
+    {$$ = build_node0(COND_OP);}
+    | LT
+    {$$ = build_node0(COND_OP);}
+    | GT
+    {$$ = build_node0(COND_OP);}
 ;
 %%
