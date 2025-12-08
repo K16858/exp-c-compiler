@@ -64,21 +64,21 @@ if_statement
 ;
 decl_statement
     : DEFINE IDENT SEMIC
-    {$$ = build_node1(DECL_STATEMENT_AST, build_node0(IDENT_AST));}
+    {$$ = build_node1(DECL_STATEMENT_AST, build_ident_node(IDENT_AST, yylval.sp));}
     | ARRAY array SEMIC
     {$$ = build_node1(DECL_STATEMENT_AST, $2);}
 ;
 var
     : IDENT
-    {$$ = build_node1(VAR_AST, build_node0(IDENT_AST));}
+    {$$ = build_ident_node(IDENT_AST, yylval.sp);}
     | NUMBER
-    {$$ = build_node1(VAR_AST, build_node0(NUMBER_AST));}
+    {$$ = build_num_node(NUMBER_AST, yylval.ival);}
     | array
-    {$$ = build_node1(VAR_AST, $1);}
+    {$$ = $1;}
 ;
 array
     : IDENT L_BRACKET expression R_BRACKET
-    {$$ = build_node2(ARRAY_AST, build_node0(IDENT_AST), build_node1(EXPRESSION_AST, $3));}
+    {$$ = build_node2(ARRAY_AST, build_ident_node(IDENT_AST, yylval.sp), build_node1(EXPRESSION_AST, $3));}
     | array L_BRACKET expression R_BRACKET
     {$$ = build_node2(ARRAY_AST, $1, build_node1(EXPRESSION_AST, $3));}
 ;
@@ -88,7 +88,7 @@ condition
 ;
 assignment_statement
     : IDENT ASSIGN expression SEMIC
-    {$$ = build_node2(ASSIGNMENT_STATEMENT_AST, build_node0(IDENT_AST), $3);}
+    {$$ = build_node2(ASSIGNMENT_STATEMENT_AST, build_ident_node(IDENT_AST, yylval.sp), $3);}
     | array ASSIGN expression SEMIC
     {$$ = build_node2(ASSIGNMENT_STATEMENT_AST, $1, $3);}
 ;
@@ -114,20 +114,20 @@ add_op
     : ADD
     {$$ = build_node0(ADD_OP_AST);}
     | SUB
-    {$$ = build_node0(ADD_OP_AST);}
+    {$$ = build_node0(SUB_OP_AST);}
 ;
 mul_op
     : MUL
     {$$ = build_node0(MUL_OP_AST);}
     | DIV
-    {$$ = build_node0(MUL_OP_AST);}
+    {$$ = build_node0(DIV_OP_AST);}
 ;
 cond_op
     : EQ
-    {$$ = build_node0(COND_OP_AST);}
+    {$$ = build_node0(EQ_OP_AST);}
     | LT
-    {$$ = build_node0(COND_OP_AST);}
+    {$$ = build_node0(LT_OP_AST);}
     | GT
-    {$$ = build_node0(COND_OP_AST);}
+    {$$ = build_node0(GT_OP_AST);}
 ;
 %%

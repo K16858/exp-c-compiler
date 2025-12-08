@@ -1245,7 +1245,7 @@ yyreduce:
 
   case 17: /* decl_statement: DEFINE IDENT SEMIC  */
 #line 67 "parser.y"
-    {(yyval.np) = build_node1(DECL_STATEMENT_AST, build_node0(IDENT_AST));}
+    {(yyval.np) = build_node1(DECL_STATEMENT_AST, build_ident_node(IDENT_AST, yylval.sp));}
 #line 1250 "parser.tab.c"
     break;
 
@@ -1257,25 +1257,25 @@ yyreduce:
 
   case 19: /* var: IDENT  */
 #line 73 "parser.y"
-    {(yyval.np) = build_node1(VAR_AST, build_node0(IDENT_AST));}
+    {(yyval.np) = build_ident_node(IDENT_AST, yylval.sp);}
 #line 1262 "parser.tab.c"
     break;
 
   case 20: /* var: NUMBER  */
 #line 75 "parser.y"
-    {(yyval.np) = build_node1(VAR_AST, build_node0(NUMBER_AST));}
+    {(yyval.np) = build_num_node(NUMBER_AST, yylval.ival);}
 #line 1268 "parser.tab.c"
     break;
 
   case 21: /* var: array  */
 #line 77 "parser.y"
-    {(yyval.np) = build_node1(VAR_AST, (yyvsp[0].np));}
+    {(yyval.np) = (yyvsp[0].np);}
 #line 1274 "parser.tab.c"
     break;
 
   case 22: /* array: IDENT L_BRACKET expression R_BRACKET  */
 #line 81 "parser.y"
-    {(yyval.np) = build_node2(ARRAY_AST, build_node0(IDENT_AST), build_node1(EXPRESSION_AST, (yyvsp[-1].np)));}
+    {(yyval.np) = build_node2(ARRAY_AST, build_ident_node(IDENT_AST, yylval.sp), build_node1(EXPRESSION_AST, (yyvsp[-1].np)));}
 #line 1280 "parser.tab.c"
     break;
 
@@ -1293,7 +1293,7 @@ yyreduce:
 
   case 25: /* assignment_statement: IDENT ASSIGN expression SEMIC  */
 #line 91 "parser.y"
-    {(yyval.np) = build_node2(ASSIGNMENT_STATEMENT_AST, build_node0(IDENT_AST), (yyvsp[-1].np));}
+    {(yyval.np) = build_node2(ASSIGNMENT_STATEMENT_AST, build_ident_node(IDENT_AST, yylval.sp), (yyvsp[-1].np));}
 #line 1298 "parser.tab.c"
     break;
 
@@ -1347,7 +1347,7 @@ yyreduce:
 
   case 34: /* add_op: SUB  */
 #line 117 "parser.y"
-    {(yyval.np) = build_node0(ADD_OP_AST);}
+    {(yyval.np) = build_node0(SUB_OP_AST);}
 #line 1352 "parser.tab.c"
     break;
 
@@ -1359,25 +1359,25 @@ yyreduce:
 
   case 36: /* mul_op: DIV  */
 #line 123 "parser.y"
-    {(yyval.np) = build_node0(MUL_OP_AST);}
+    {(yyval.np) = build_node0(DIV_OP_AST);}
 #line 1364 "parser.tab.c"
     break;
 
   case 37: /* cond_op: EQ  */
 #line 127 "parser.y"
-    {(yyval.np) = build_node0(COND_OP_AST);}
+    {(yyval.np) = build_node0(EQ_OP_AST);}
 #line 1370 "parser.tab.c"
     break;
 
   case 38: /* cond_op: LT  */
 #line 129 "parser.y"
-    {(yyval.np) = build_node0(COND_OP_AST);}
+    {(yyval.np) = build_node0(LT_OP_AST);}
 #line 1376 "parser.tab.c"
     break;
 
   case 39: /* cond_op: GT  */
 #line 131 "parser.y"
-    {(yyval.np) = build_node0(COND_OP_AST);}
+    {(yyval.np) = build_node0(GT_OP_AST);}
 #line 1382 "parser.tab.c"
     break;
 
