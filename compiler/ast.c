@@ -99,7 +99,16 @@ void print_node_type(int node_type) {
 }
 
 int print_tree(Node *n, int num) {
-    printf("\"%s_%d\": {", node_types[n->type], num++);
+    printf("\"%s_%d", node_types[n->type], num++);
+    
+    if (n->type == IDENT_AST && n->variable != NULL) {
+        printf("(%s)", n->variable);
+    } else if (n->type == NUMBER_AST) {
+        printf("(%d)", n->ivalue);
+    }
+    
+    printf("\": {");
+    
     if (n->child != NULL) {
         num = print_tree(n->child, num);
     }
