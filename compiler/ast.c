@@ -1,4 +1,5 @@
 #include "ast.h"
+extern void gen_code(Node *n);
 
 Node *top; // 抽象構文木のルートノード保存用
 
@@ -140,5 +141,6 @@ int main(void) {
     // AST表示
     print_tree_in_json(top);
     // コード生成
+    gen_code(top);
     return 0;
 }

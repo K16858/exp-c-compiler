@@ -1,5 +1,5 @@
-parser: parser.tab.c lex.yy.c ast.c
-	gcc parser.tab.c lex.yy.c ast.c -o parser -lfl -ly
+parser: parser.tab.c lex.yy.c ast.c code_generation.c
+	gcc parser.tab.c lex.yy.c ast.c code_generation.c -o parser -lfl -ly
 
 parser.tab.c: parser.y
 	bison -d parser.y
