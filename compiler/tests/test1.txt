@@ -1,0 +1,4 @@
+define a;
+define b;
+
+a = a + b;
