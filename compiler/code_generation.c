@@ -1,6 +1,15 @@
 #include <stdio.h>
 #include "ast.h"
 
+typedef struct {
+    char *name;
+    int offset;
+    int size;  
+} Symbol;
+
+Symbol *symbol_table;
+int symbol_count;
+
 void print_node(Node *n) {
     if (n != NULL) {
         printf("type: %s\n", node_types[n->type]);
