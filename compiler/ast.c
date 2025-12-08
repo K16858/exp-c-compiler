@@ -2,6 +2,32 @@
 
 Node *top; // 抽象構文木のルートノード保存用
 
+Node *build_num_node(NType t, int n) {
+    Node *p;
+    p = (Node *)malloc(sizeof(Node));
+    if (p == NULL) {
+        yyerror("out of memory");
+    }
+    p->type = t;
+    p->ivalue = n;
+    p->child = NULL;
+
+    return p;
+}
+
+Node *build_ident_node(NType t, char *s) {
+    Node *p;
+    p = (Node *)malloc(sizeof(Node));
+    if (p == NULL) {
+        yyerror("out of memory");
+    }
+    p->type = t;
+    p->variable = s;
+    p->child = NULL;
+
+    return p;
+}
+
 Node *build_node0(NType t) {
     Node *p;
     p = (Node *)malloc(sizeof(Node));

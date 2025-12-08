@@ -39,6 +39,9 @@ typedef struct node{
 } Node;
 
 // 抽象構文木のノードの生成
+Node *build_num_node(NType t, int n);
+Node *build_ident_node(NType t, char *s);
+
 Node *build_node0(NType t);
 Node *build_node1(NType t, Node *p1);
 Node *build_node2(NType t, Node *p1, Node *p2);
