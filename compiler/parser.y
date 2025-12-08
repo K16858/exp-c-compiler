@@ -1,6 +1,5 @@
 %{
     #include <stdio.h>
-    #include "parser.tab.h"
     #include "ast.h"
     extern int yylex();
     extern int yyerror();
@@ -26,18 +25,18 @@ decl_function
     {$$ = build_node2(DECL_FUNCTION_AST, build_node0(IDENT_AST), $7);}
 ;
 function
-    : IDENT L_PARAN var R_PARAN
+    : IDENT L_PARAN var R_PARAN SEMIC
     {$$ = build_node1(FUNCTION_AST, $3);}
 ;
 declarations
     : decl_statement declarations
-    {$$ = build_node2(DECLARATIONS_AST, $1, $$);}
+    {$$ = build_node2(DECLARATIONS_AST, $1, $2);}
     | decl_statement
     {$$ = build_node1(DECLARATIONS_AST, $1);}
 ;
 statements
     : statement statements 
-    {$$ = build_node2(STATEMENTS_AST, $1, $$);}
+    {$$ = build_node2(STATEMENTS_AST, $1, $2);}
     | statement
     {$$ = build_node1(STATEMENTS_AST, $1);}
 ;
