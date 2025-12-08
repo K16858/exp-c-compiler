@@ -32,6 +32,8 @@ typedef enum{
 // 抽象構文木のノードのデータ構造
 typedef struct node{
     NType type;
+    int ivalue;
+    char* variable;
     struct node *child;
     struct node *brother;
 } Node;
