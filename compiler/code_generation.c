@@ -67,6 +67,8 @@ void gen_header(Node *n) {
 
 void gen_fotter() {
     char* code = 
+        "   jr $ra\n"
+        "   nop\n"
         "    \n"
         "    #data segment\n"
         "    .data 0x10004000\n"
