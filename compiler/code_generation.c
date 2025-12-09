@@ -102,6 +102,10 @@ void gen_decl_var(Node *n) {
 
 void gen_assignment(Node *n) {
     int offset = lookup_symbol_table(n->child->variable);
+    if (offset < 0) {
+        printf("No variable\n");
+        return;
+    }
     printf("     lw $t1, %d($t0)\n", offset);
     printf("     ori $t0, $zero, $v0\n");
 
