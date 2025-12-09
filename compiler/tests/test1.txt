@@ -1,4 +1,10 @@
 define a;
 define b;
 
+a = 1;
+b = 1;
 a = a + b;
+
+if (a > 1) {
+    a = a + 1;
+}

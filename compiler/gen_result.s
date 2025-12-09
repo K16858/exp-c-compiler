@@ -21,35 +21,35 @@ stop: # if syscall return
 .text 0x00001000 # 以降のコードを 0から配置 x00001000
 main:
     la $t0, RESULT
-    ori $v0, $zero, 0
-    sw $v0, 4($t0)
     ori $v0, $zero, 1
     sw $v0, 0($t0)
-LOOP:
+    ori $v0, $zero, 1
+    sw $v0, 4($t0)
     lw $v0, 0($t0)
     nop
     addi $sp, $sp, -4
     sw $v0, 0($sp)
-    ori $v0, $zero, 11
+    lw $v0, 4($t0)
+    nop
+    or $v1, $v0, $zero
+    lw $v0, 0($sp)
+    nop
+    addi $sp, $sp, 4
+    add $v0, $v0, $v1
+    sw $v0, 0($t0)
+IF_TRUE:
+    lw $v0, 0($t0)
+    nop
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
+    ori $v0, $zero, 1
     addi $v1, $v0, 0
     lw $v0, 0($sp)
     nop
     addi $sp, $sp, 4
-    slt $t2, $v0, $v1
-    beq $t2, $zero, EXIT
+    sgt $t2, $v0, $v1
+    beq $t2, $zero, IF_FALSE
     nop
-    lw $v0, 4($t0)
-    nop
-    addi $sp, $sp, -4
-    sw $v0, 0($sp)
-    lw $v0, 0($t0)
-    nop
-    or $v1, $v0, $zero
-    lw $v0, 0($sp)
-    nop
-    addi $sp, $sp, 4
-    add $v0, $v0, $v1
-    sw $v0, 4($t0)
     lw $v0, 0($t0)
     nop
     addi $sp, $sp, -4
@@ -61,9 +61,10 @@ LOOP:
     addi $sp, $sp, 4
     add $v0, $v0, $v1
     sw $v0, 0($t0)
-    j LOOP
+    j IF_END
     nop
-EXIT:
+IF_FALSE:
+IF_END:
     jr $ra
     nop
     

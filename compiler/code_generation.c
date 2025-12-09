@@ -132,6 +132,24 @@ void gen_loop(Node *n) {
     printf("EXIT:\n");
 }
 
+void gen_if(Node *n) {
+    printf("IF_TRUE:\n");
+    // condition
+    gen_code(n->child);
+    printf("    beq $t2, $zero, IF_FALSE\n");
+    printf("    nop\n");
+    // statements
+    gen_code(n->child->brother);
+    printf("    j IF_END\n");
+    printf("    nop\n");
+    printf("IF_FALSE:\n");
+    // else statements
+    if (n->child->brother->brother != NULL) {
+        gen_code(n->child->brother->brother);
+    }
+    printf("IF_END:\n");
+}
+
 void gen_push() {
     printf("    addi $sp, $sp, -4\n");
     printf("    sw $v0, 0($sp)\n");
@@ -169,7 +187,7 @@ void gen_comparison(Node *n) {
             printf("    slt $t2, $v0, $v1\n");
             break;
         case GT_OP_AST:
-            printf("    sgt $t2, $v0, $v1\n");
+            printf("    slt $t2, $v0, $v1\n");
             break;
         default:
             break;
@@ -202,17 +220,9 @@ void gen_expression(Node *n) {
 }
 
 void gen_code(Node *n) {
-    // if (n->child != NULL) {
-    //     gen_code(n->child);
-    // }
-    // if (n->brother != NULL) {
-    //     gen_code(n->brother);
-    // }
-
     if (n == NULL) {
         return;
     }
-    // printf("gen_code\n");
     switch (n->type) {
         case PROGRAM_AST:
             gen_header(n);
@@ -229,6 +239,9 @@ void gen_code(Node *n) {
             break;
         case LOOP_STATEMENT_AST:
             gen_loop(n);      
+            break;
+        case IF_STATEMENT_AST:
+            gen_if(n);
             break;
         case CONDITION_AST:
             gen_comparison(n);
