@@ -150,6 +150,28 @@ void gen_number(Node *n) {
     printf("    ori $v0, $zero, %d\n", num);
 }
 
+void gen_comparison(Node *n) {
+    gen_code(n->child->child);
+    gen_push();
+    gen_code(n->child->brother->child);
+    printf("    ori $v1, $zero, $v0\n");
+    gen_pop();
+
+    switch (n->child->type) {
+        case EQ_OP_AST:
+            printf("    seq $t2, $v0, $v1\n");
+            break;
+        case LT_OP_AST:
+            printf("    slt $t2, $v0, $v1\n");
+            break;
+        case GT_OP_AST:
+            printf("    sgt $t2, $v0, $v1\n");
+            break;
+        default:
+            break;
+    }
+}
+
 void gen_expression(Node *n) {
     gen_code(n->child);
     gen_push();
