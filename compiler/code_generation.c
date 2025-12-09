@@ -45,7 +45,7 @@ void gen_header() {
 void gen_code(Node *n) {
     printf("gen_code\n");
     print_node(n);
-    gen_header();
+    // gen_header();
     if (n->child != NULL) {
         gen_code(n->child);
     }

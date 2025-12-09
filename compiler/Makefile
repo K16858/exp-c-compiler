@@ -8,7 +8,7 @@ lex.yy.c: lexer.l
 	flex lexer.l
 
 test: parser
-	./parser < ./tests/test1.txt
+	./parser < ./tests/test.txt
 
 clean:
 	rm -f parser parser.tab.c parser.tab.h lex.yy.c

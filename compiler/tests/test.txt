@@ -1,0 +1,9 @@
+define i;
+define sum;
+
+sum = 0;
+i = 1;
+while(x < 11) {
+    sum = sum + 1;
+    i = i + 1;
+}
