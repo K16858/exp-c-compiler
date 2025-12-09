@@ -16,7 +16,7 @@ void print_node(Node *n) {
     }
 }
 
-void gen_header() {
+void gen_header(Node *n) {
     char* code = 
         "INITIAL_GP = 0x10008000 # initial value of global pointer\n"
         "INITIAL_SP = 0x7ffffffc # initial value of stack pointer\n"
@@ -41,12 +41,31 @@ void gen_header() {
         ".text 0x00001000 # 以降のコードを 0から配置 x00001000\n"
         "main:";
     printf("%s\n", code);
+
+    gen_code(n->child);
+    gen_code(n->brother);
 }
 
-void gen_assignment(n) {
-    char* code = "ori $t1, $zero, 0";
+void gen_assignment(Node *n) {
+    char* code = "     ori $t1, $zero, 0";
 
     printf("%s\n", code);
+
+    gen_code(n->child);
+    gen_code(n->brother);
+}
+
+void gen_loop(Node *n) {
+    printf("LOOP:\n");
+    // condition
+    gen_code(n->child);
+    printf(" EXIT\n");
+    // statements
+    gen_code(n->brother);
+    printf("    STATEMENTS\n");
+    printf("    j LOOP\n");
+    printf("    nop\n");
+    printf("EXIT:\n");
 }
 
 void gen_code(Node *n) {
@@ -60,21 +79,22 @@ void gen_code(Node *n) {
     if (n == NULL) {
         return;
     }
-    printf("gen_code\n");
+    // printf("gen_code\n");
     switch (n->type) {
         case PROGRAM_AST:
-            print_node(n);
-            gen_header();
-            gen_code(n->child);
-            gen_code(n->brother);
+            gen_header(n);
             break;
         case ASSIGNMENT_STATEMENT_AST:
-            print_node(n);
             gen_assignment(n);
-            gen_code(n->child);
-            gen_code(n->brother);
+            break;
+        case LOOP_STATEMENT_AST:
+            gen_loop(n);      
+            break;
+        case CONDITION_AST:
+            printf("    CONDITION");
             break;
         default:
+            print_node(n);
             gen_code(n->child);
             gen_code(n->brother);
             break;
