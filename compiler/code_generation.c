@@ -16,7 +16,7 @@ typedef struct {
     int size;  
 } Symbol;
 
-Symbol *symbol_table;
+Symbol symbol_table[100];
 int symbol_count;
 
 void print_node(Node *n) {
@@ -26,8 +26,7 @@ void print_node(Node *n) {
 }
 
 void init() {
-    symbol_table = (Symbol *)malloc(sizeof(Symbol));
-    symbol_table = 0;
+    symbol_count = 0;
 }
 
 void gen_header(Node *n) {
@@ -73,15 +72,16 @@ void gen_fotter() {
 }
 
 void register_var(Node *n) {
-    strncpy((symbol_table + symbol_count)->name, n->child->variable, sizeof(n->child->variable)-1);
-    (symbol_table + symbol_count)->offset = symbol_count * 4;
-    (symbol_table + symbol_count)->size = 1;
+    Symbol current = symbol_table[symbol_count];
+    
+    current.name = n->child->variable;
+    current.offset = symbol_count * 4;
+    current.size = 1;
 
     symbol_count++;
 }
 
 void gen_decl_var(Node *n) {
-    printf("%s\n", n->child->variable);
     register_var(n);
     gen_code(n->brother);
 }
