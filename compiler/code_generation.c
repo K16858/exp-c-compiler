@@ -142,7 +142,8 @@ void gen_pop() {
 }
 
 void gen_var(Node *n) {
-    printf("    lw $t0, %d($t0)\n", 1);
+    int offset = lookup_symbol_table(n->variable);
+    printf("    lw $v0, %d($t0)\n", offset);
 }
 
 void gen_number(Node *n) {
