@@ -147,7 +147,7 @@ void gen_var(Node *n) {
 
 void gen_number(Node *n) {
     int num = n->ivalue;
-    printf("    ori $t0, $zero, %d\n", num);
+    printf("    ori $v0, $zero, %d\n", num);
 }
 
 void gen_expression(Node *n) {
