@@ -3,6 +3,8 @@
 #include <string.h>
 #include "ast.h"
 
+#define MAXBUF 20
+
 void gen_header(Node *n);
 void gen_fotter();
 void gen_decl_var(Node *n);
@@ -72,13 +74,25 @@ void gen_fotter() {
 }
 
 void register_var(Node *n) {
-    Symbol current = symbol_table[symbol_count];
+    // Symbol current = symbol_table[symbol_count];
     
-    current.name = n->child->variable;
-    current.offset = symbol_count * 4;
-    current.size = 1;
+    // current.name = (char *)malloc(sizeof(MAXBUF));
+    // strncpy(current.name, n->child->variable, MAXBUF);
+    symbol_table[symbol_count].name = n->child->variable;
+    symbol_table[symbol_count].offset = symbol_count * 4;
+    symbol_table[symbol_count].size = 1;
 
     symbol_count++;
+}
+
+int lookup_symbol_table(char *target_var) {
+    for (int i=0; i < symbol_count; i++) {
+        if (strncmp(symbol_table[i].name, target_var, MAXBUF) == 0) {
+            return symbol_table[i].offset;
+        }
+    }
+
+    return -1;
 }
 
 void gen_decl_var(Node *n) {
@@ -87,9 +101,9 @@ void gen_decl_var(Node *n) {
 }
 
 void gen_assignment(Node *n) {
-    char* code = "     ori $t1, $zero, 0";
-
-    printf("%s\n", code);
+    int offset = lookup_symbol_table(n->child->variable);
+    printf("     lw $t1, %d($t0)\n", offset);
+    printf("     ori $t0, $zero, $v0\n");
 
     gen_code(n->child);
     gen_code(n->brother);

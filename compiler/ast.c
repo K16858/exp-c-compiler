@@ -1,5 +1,8 @@
 #include "ast.h"
+#include <string.h>
 extern void gen_code(Node *n);
+
+#define MAXBUF 20
 
 Node *top; // 抽象構文木のルートノード保存用
 
@@ -23,7 +26,10 @@ Node *build_ident_node(NType t, char *s) {
         yyerror("out of memory");
     }
     p->type = t;
-    p->variable = s;
+    if ((p->variable = (char *)malloc(sizeof(MAXBUF))) == NULL) {
+        yyerror("out of memory");
+    }
+    strncpy(p->variable, s, MAXBUF);
     p->child = NULL;
 
     return p;
