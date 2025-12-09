@@ -227,7 +227,7 @@ void gen_code(Node *n) {
             gen_loop(n);      
             break;
         case CONDITION_AST:
-            printf("    CONDITION\n");
+            gen_comparison(n);
             break;
         case IDENT_AST:
             gen_var(n);
