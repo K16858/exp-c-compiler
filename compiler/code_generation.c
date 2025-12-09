@@ -1,7 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "ast.h"
-#include "string.h"
+
+void gen_header(Node *n);
+void gen_fotter();
+void gen_decl_var(Node *n);
+void gen_assign(Node *n);
+void gen_loop(Node *n);
+void gen_code(Node *n);
 
 typedef struct {
     char *name;
@@ -10,7 +17,7 @@ typedef struct {
 } Symbol;
 
 Symbol *symbol_table;
-int symbol_count = 0;
+int symbol_count;
 
 void print_node(Node *n) {
     if (n != NULL) {
@@ -18,7 +25,13 @@ void print_node(Node *n) {
     }
 }
 
+void init() {
+    symbol_table = (Symbol *)malloc(sizeof(Symbol));
+    symbol_table = 0;
+}
+
 void gen_header(Node *n) {
+    init();
     char* code = 
         "INITIAL_GP = 0x10008000 # initial value of global pointer\n"
         "INITIAL_SP = 0x7ffffffc # initial value of stack pointer\n"
@@ -46,10 +59,21 @@ void gen_header(Node *n) {
 
     gen_code(n->child);
     gen_code(n->brother);
+
+    gen_fotter();
+}
+
+void gen_fotter() {
+    char* code = 
+        "    \n"
+        "    #data segment\n"
+        "    .data 0x10004000\n"
+        "    RESULT: .word 0xffffffff\n";
+    printf("%s", code);
 }
 
 void register_var(Node *n) {
-    strncpy(*(symbol_table + symbol_count)->name, n->child->variable, sizeof(n->child->variable)-1);
+    strncpy((symbol_table + symbol_count)->name, n->child->variable, sizeof(n->child->variable)-1);
     (symbol_table + symbol_count)->offset = symbol_count * 4;
     (symbol_table + symbol_count)->size = 1;
 
