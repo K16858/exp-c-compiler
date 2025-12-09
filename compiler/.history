@@ -7,3 +7,27 @@ print 0x10004004
 quit
 run
 quit
+run
+print 0x10004000
+print 0x10004004
+quit
+run
+print 0x10004000
+print 0x10004004
+quit
+run
+print 0x10004000
+print 0x10004004
+quit
+run
+print 0x10004000
+print 0x10004004
+quit
+run
+print 0x10004000
+print 0x10004004
+quit
+run
+print 0x10004004
+print 0x10004000
+quit

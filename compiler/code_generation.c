@@ -101,7 +101,6 @@ int lookup_symbol_table(char *target_var) {
 
 void gen_decl_var(Node *n) {
     register_var(n);
-    gen_code(n->child);
     gen_code(n->child->brother);
 }
 
@@ -151,9 +150,9 @@ void gen_number(Node *n) {
 }
 
 void gen_comparison(Node *n) {
-    gen_code(n->child->child);
-    gen_push();
     gen_code(n->child->brother->child);
+    gen_push();
+    gen_code(n->child->brother->child->brother);
     printf("    addi $v1, $v0, 0\n");
     gen_pop();
 
@@ -176,7 +175,7 @@ void gen_expression(Node *n) {
     gen_code(n->child);
     gen_push();
     gen_code(n->child->brother);
-    printf("    addi $v1, $v0, 0\n");
+    printf("    or $v1, $v0, $zero\n");
     gen_pop();
 
     switch (n->type) {
