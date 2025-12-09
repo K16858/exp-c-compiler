@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "ast.h"
+#include "string.h"
 
 typedef struct {
     char *name;
@@ -8,7 +10,7 @@ typedef struct {
 } Symbol;
 
 Symbol *symbol_table;
-int symbol_count;
+int symbol_count = 0;
 
 void print_node(Node *n) {
     if (n != NULL) {
@@ -43,6 +45,20 @@ void gen_header(Node *n) {
     printf("%s\n", code);
 
     gen_code(n->child);
+    gen_code(n->brother);
+}
+
+void register_var(Node *n) {
+    strncpy(*(symbol_table + symbol_count)->name, n->child->variable, sizeof(n->child->variable)-1);
+    (symbol_table + symbol_count)->offset = symbol_count * 4;
+    (symbol_table + symbol_count)->size = 1;
+
+    symbol_count++;
+}
+
+void gen_decl_var(Node *n) {
+    printf("%s\n", n->child->variable);
+    register_var(n);
     gen_code(n->brother);
 }
 
@@ -83,6 +99,13 @@ void gen_code(Node *n) {
     switch (n->type) {
         case PROGRAM_AST:
             gen_header(n);
+            break;
+        case DECLARATIONS_AST:
+            gen_code(n->child);
+            gen_code(n->brother);
+            break;
+        case DECL_STATEMENT_AST:
+            gen_decl_var(n);
             break;
         case ASSIGNMENT_STATEMENT_AST:
             gen_assignment(n);
