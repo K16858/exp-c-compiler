@@ -55,7 +55,8 @@ void gen_header(Node *n) {
         "    nop # (delay slot)\n"
         "\n"
         ".text 0x00001000 # 以降のコードを 0から配置 x00001000\n"
-        "main:";
+        "main:\n"
+        "    la $t0, RESULT";
     printf("%s\n", code);
 
     gen_code(n->child);
@@ -106,8 +107,8 @@ void gen_assignment(Node *n) {
         printf("No variable\n");
         return;
     }
-    printf("     lw $t1, %d($t0)\n", offset);
-    printf("     ori $t0, $zero, $v0\n");
+    printf("     ori $v0, $zero, 0\n");
+    printf("     sw $v0, %d($t0)\n", offset);
 
     gen_code(n->child);
     gen_code(n->brother);
@@ -117,7 +118,7 @@ void gen_loop(Node *n) {
     printf("LOOP:\n");
     // condition
     gen_code(n->child);
-    printf(" EXIT\n");
+    printf("    beq $t2, $zero, EXIT\n");
     // statements
     gen_code(n->brother);
     printf("    STATEMENTS\n");
@@ -156,7 +157,7 @@ void gen_code(Node *n) {
             gen_loop(n);      
             break;
         case CONDITION_AST:
-            printf("    CONDITION");
+            printf("    CONDITION\n");
             break;
         default:
             print_node(n);
