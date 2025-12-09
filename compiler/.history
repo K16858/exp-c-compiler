@@ -44,3 +44,6 @@ print 0x10004008
 print 0x100040012
 print
 quit
+run
+print
+quit

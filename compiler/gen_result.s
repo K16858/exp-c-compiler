@@ -27,30 +27,37 @@ main:
     sw $v0, 0($t0)
 LOOP:
     lw $v0, 0($t0)
+    nop
     addi $sp, $sp, -4
     sw $v0, 0($sp)
     ori $v0, $zero, 11
     addi $v1, $v0, 0
     lw $v0, 0($sp)
+    nop
     addi $sp, $sp, 4
     slt $t2, $v0, $v1
     beq $t2, $zero, EXIT
     nop
     lw $v0, 4($t0)
+    nop
     addi $sp, $sp, -4
     sw $v0, 0($sp)
     lw $v0, 0($t0)
+    nop
     or $v1, $v0, $zero
     lw $v0, 0($sp)
+    nop
     addi $sp, $sp, 4
     add $v0, $v0, $v1
     sw $v0, 4($t0)
     lw $v0, 0($t0)
+    nop
     addi $sp, $sp, -4
     sw $v0, 0($sp)
     ori $v0, $zero, 1
     or $v1, $v0, $zero
     lw $v0, 0($sp)
+    nop
     addi $sp, $sp, 4
     add $v0, $v0, $v1
     sw $v0, 0($t0)
@@ -64,4 +71,4 @@ EXIT:
     .data 0x10004000
 RESULT:
     .word 0xffffffff
-    .word 10
+    .word 0xffffffff
