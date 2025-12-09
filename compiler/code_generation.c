@@ -111,11 +111,10 @@ void gen_assignment(Node *n) {
         printf("No variable\n");
         return;
     }
-    printf("    ori $v0, $zero, 0\n");
-    printf("    sw $v0, %d($t0)\n", offset);
 
-    gen_code(n->child);
     gen_code(n->child->brother);
+
+    printf("    sw $v0, %d($t0)\n", offset);
 }
 
 void gen_loop(Node *n) {
