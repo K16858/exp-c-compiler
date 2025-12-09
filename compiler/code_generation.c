@@ -151,34 +151,24 @@ void gen_number(Node *n) {
 }
 
 void gen_expression(Node *n) {
-    // switch (n->type) {
-    //     case NUMBER_AST:
-    //         printf("NUMBER\n");
-    //         gen_code(n->child);
-    //         break;
-    //     case IDENT_AST:
-    //         printf("IDENT\n");
-    //         gen_code(n->child);
-    //     default:
-    //         break;
-    // }
     gen_code(n->child);
     gen_push();
     gen_code(n->child->brother);
     printf("    ori $v1, $zero, $v0\n");
     gen_pop();
+
     switch (n->type) {
         case ADD_OP_AST:
-            printf("    add $v0, $v0, $t1\n");
+            printf("    add $v0, $v0, $v1\n");
             break;
         case SUB_OP_AST:
-            printf("    sub $v0, $v0, $t1\n");
+            printf("    sub $v0, $v0, $v1\n");
             break;
         case MUL_OP_AST:
-            printf("    mult $v0, $v0, $t1\n");
+            printf("    mult $v0, $v0, $v1\n");
             break;
         case DIV_OP_AST:
-            printf("    div $v0, $v0, $t1\n");
+            printf("    div $v0, $v0, $v1\n");
             break;
         default:
             break;
