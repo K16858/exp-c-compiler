@@ -1,0 +1,9 @@
+print
+run
+print
+print RESULT
+print 0x10004000
+print 0x10004004
+quit
+run
+quit

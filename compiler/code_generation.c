@@ -122,9 +122,9 @@ void gen_loop(Node *n) {
     // condition
     gen_code(n->child);
     printf("    beq $t2, $zero, EXIT\n");
+    printf("    nop\n");
     // statements
     gen_code(n->child->brother);
-    printf("    STATEMENTS\n");
     printf("    j LOOP\n");
     printf("    nop\n");
     printf("EXIT:\n");
@@ -154,7 +154,7 @@ void gen_comparison(Node *n) {
     gen_code(n->child->child);
     gen_push();
     gen_code(n->child->brother->child);
-    printf("    ori $v1, $zero, $v0\n");
+    printf("    addi $v1, $v0, 0\n");
     gen_pop();
 
     switch (n->child->type) {
@@ -176,7 +176,7 @@ void gen_expression(Node *n) {
     gen_code(n->child);
     gen_push();
     gen_code(n->child->brother);
-    printf("    ori $v1, $zero, $v0\n");
+    printf("    addi $v1, $v0, 0\n");
     gen_pop();
 
     switch (n->type) {
