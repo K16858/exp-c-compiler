@@ -61,7 +61,7 @@ void gen_header(Node *n) {
     printf("%s\n", code);
 
     gen_code(n->child);
-    gen_code(n->brother);
+    gen_code(n->child->brother);
 
     gen_fotter();
 }
@@ -102,7 +102,7 @@ int lookup_symbol_table(char *target_var) {
 void gen_decl_var(Node *n) {
     register_var(n);
     gen_code(n->child);
-    gen_code(n->brother);
+    gen_code(n->child->brother);
 }
 
 void gen_assignment(Node *n) {
@@ -115,7 +115,7 @@ void gen_assignment(Node *n) {
     printf("    sw $v0, %d($t0)\n", offset);
 
     gen_code(n->child);
-    gen_code(n->brother);
+    gen_code(n->child->brother);
 }
 
 void gen_loop(Node *n) {
@@ -124,7 +124,7 @@ void gen_loop(Node *n) {
     gen_code(n->child);
     printf("    beq $t2, $zero, EXIT\n");
     // statements
-    gen_code(n->brother);
+    gen_code(n->child->brother);
     printf("    STATEMENTS\n");
     printf("    j LOOP\n");
     printf("    nop\n");
@@ -142,12 +142,12 @@ void gen_pop() {
 }
 
 void gen_var(Node *n) {
-    printf("    lw $t0, %d($t0)");
+    printf("    lw $t0, %d($t0)\n", 1);
 }
 
 void gen_number(Node *n) {
     int num = n->ivalue;
-    printf("    ori $t0, $zero, %d", num);
+    printf("    ori $t0, $zero, %d\n", num);
 }
 
 void gen_expression(Node *n) {
@@ -164,7 +164,7 @@ void gen_expression(Node *n) {
     // }
     gen_code(n->child);
     gen_push();
-    gen_code(n->brother);
+    gen_code(n->child->brother);
     printf("    ori $v1, $zero, $v0\n");
     gen_pop();
     switch (n->type) {
@@ -203,7 +203,7 @@ void gen_code(Node *n) {
             break;
         case DECLARATIONS_AST:
             gen_code(n->child);
-            gen_code(n->brother);
+            gen_code(n->child->brother);
             break;
         case DECL_STATEMENT_AST:
             gen_decl_var(n);
@@ -229,7 +229,7 @@ void gen_code(Node *n) {
             break;
         default:
             gen_code(n->child);
-            gen_code(n->brother);
+            gen_code(n->child->brother);
             break;
     }
 }
