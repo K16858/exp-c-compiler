@@ -47,7 +47,7 @@ IF_TRUE:
     lw $v0, 0($sp)
     nop
     addi $sp, $sp, 4
-    sgt $t2, $v0, $v1
+    slt $t2, $v1, $v0
     beq $t2, $zero, IF_FALSE
     nop
     lw $v0, 0($t0)

@@ -181,13 +181,14 @@ void gen_comparison(Node *n) {
 
     switch (n->child->type) {
         case EQ_OP_AST:
-            printf("    seq $t2, $v0, $v1\n");
+            printf("    xor $t2, $v0, $v1\n");
+            printf("    slti $t2, $t2, 1\n");
             break;
         case LT_OP_AST:
             printf("    slt $t2, $v0, $v1\n");
             break;
         case GT_OP_AST:
-            printf("    slt $t2, $v0, $v1\n");
+            printf("    slt $t2, $v1, $v0\n");
             break;
         default:
             break;
