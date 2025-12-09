@@ -73,8 +73,11 @@ void gen_fotter() {
         "    \n"
         "    #data segment\n"
         "    .data 0x10004000\n"
-        "    RESULT: .word 0xffffffff\n";
+        "RESULT:\n";
     printf("%s", code);
+    for (int i=0; i < symbol_count; i++) {
+        printf("    .word 0xffffffff\n");
+    }
 }
 
 void register_var(Node *n) {

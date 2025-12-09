@@ -33,3 +33,14 @@ print 0x10004000
 quit
 run
 quit
+run
+print 0x10004000
+print 0x10004004
+quti
+quit
+run
+print 0x10004004
+print 0x10004008
+print 0x100040012
+print
+quit

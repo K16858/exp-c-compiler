@@ -62,4 +62,6 @@ EXIT:
     
     #data segment
     .data 0x10004000
-    RESULT: .word 0xffffffff
+RESULT:
+    .word 0xffffffff
+    .word 10
