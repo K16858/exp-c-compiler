@@ -85,10 +85,6 @@ void gen_fotter() {
 }
 
 void register_var(Node *n) {
-    // Symbol current = symbol_table[symbol_count];
-    
-    // current.name = (char *)malloc(sizeof(MAXBUF));
-    // strncpy(current.name, n->child->variable, MAXBUF);
     symbol_table[symbol_count].name = n->child->variable;
     symbol_table[symbol_count].offset = symbol_count * 4;
     symbol_table[symbol_count].size = 1;
