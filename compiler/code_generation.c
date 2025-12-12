@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "ast.h"
 
 #define MAXBUF 20
@@ -19,7 +20,8 @@ void gen_code(Node *n);
 typedef struct {
     char *name;
     int offset;
-    int size;  
+    int size;
+    bool is_array;
 } Symbol;
 
 Symbol symbol_table[100];
@@ -93,6 +95,7 @@ void register_var(Node *n) {
     symbol_table[symbol_count].name = n->child->variable;
     symbol_table[symbol_count].offset = offset_count * 4;
     symbol_table[symbol_count].size = 1;
+    symbol_table[symbol_count].is_array = false;
 
     symbol_count++;
     offset_count++;
@@ -102,6 +105,7 @@ void register_array(Node *n) {
     symbol_table[symbol_count].name = n->child->child->variable;
     symbol_table[symbol_count].offset = offset_count * 4;
     symbol_table[symbol_count].size = n->child->child->brother->child->ivalue;
+    symbol_table[symbol_count].is_array = true;
 
     symbol_count++;
     offset_count += n->child->child->brother->child->ivalue;
