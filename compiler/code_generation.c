@@ -27,6 +27,7 @@ int symbol_count;
 int offset_count;
 int if_count;
 int loop_count;
+int bytes;
 
 void print_node(Node *n) {
     if (n != NULL) {
@@ -39,6 +40,7 @@ void init() {
     offset_count = 0;
     if_count = 0;
     loop_count = 0;
+    bytes = 0;
 }
 
 void gen_header(Node *n) {
@@ -84,14 +86,14 @@ void gen_fotter() {
         "    .data 0x10004000\n"
         "RESULT:\n";
     printf("%s", code);
-    for (int i=0; i < offset_count; i++) {
+    for (int i=0; i < offset_count * 4; i++) {
         printf("    .word 0xffffffff\n");
     }
 }
 
 void register_var(Node *n) {
     symbol_table[symbol_count].name = n->child->variable;
-    symbol_table[symbol_count].offset = offset_count * 4;
+    symbol_table[symbol_count].offset = offset_count;
     symbol_table[symbol_count].size = 1;
     symbol_table[symbol_count].is_array = false;
 
@@ -101,7 +103,7 @@ void register_var(Node *n) {
 
 void register_array(Node *n) {
     symbol_table[symbol_count].name = n->child->child->variable;
-    symbol_table[symbol_count].offset = offset_count * 4;
+    symbol_table[symbol_count].offset = offset_count;
     symbol_table[symbol_count].size = n->child->child->brother->child->ivalue;
     symbol_table[symbol_count].is_array = true;
 
@@ -148,6 +150,8 @@ void gen_assignment(Node *n) {
 
         gen_code(n->child->child->brother);
 
+        printf("    # offset %d\n", offset);
+
         printf("    addi $v1, $v0, %d\n", offset);
         printf("    ori $t2, $t2, 4\n");
         printf("    mult $v1, $t2\n");
@@ -161,17 +165,18 @@ void gen_assignment(Node *n) {
 }
 
 void gen_loop(Node *n) {
-    printf("LOOP_%d:\n", loop_count);
+    int current_loop = loop_count;
+    loop_count++;
+    printf("LOOP_%d:\n", current_loop);
     // condition
     gen_code(n->child);
-    printf("    beq $t2, $zero, EXIT_%d\n", loop_count);
+    printf("    beq $t2, $zero, EXIT_%d\n", current_loop);
     printf("    nop\n");
     // statements
     gen_code(n->child->brother);
-    printf("    j LOOP_%d\n", loop_count);
+    printf("    j LOOP_%d\n", current_loop);
     printf("    nop\n");
-    printf("EXIT_%d:\n", loop_count);
-    loop_count++;
+    printf("EXIT_%d:\n", current_loop);
 }
 
 void gen_if(Node *n) {

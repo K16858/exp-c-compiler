@@ -1,5 +1,5 @@
-array a[10];
 define x;
+array a[10];
 
 a[0] = 10;
 x = 2;

@@ -22,7 +22,8 @@ stop: # if syscall return
 main:
     la $t0, RESULT
     ori $v0, $zero, 0
-    addi $v1, $v0, 0
+    # offset 1
+    addi $v1, $v0, 1
     ori $t2, $t2, 4
     mult $v1, $t2
     mflo $v1
@@ -30,8 +31,8 @@ main:
     ori $v0, $zero, 10
     sw $v0, 0($v1)
     ori $v0, $zero, 2
-    sw $v0, 40($t0)
-    lw $v0, 40($t0)
+    sw $v0, 0($t0)
+    lw $v0, 0($t0)
     nop
     addi $sp, $sp, -4
     sw $v0, 0($sp)
@@ -41,14 +42,15 @@ main:
     nop
     addi $sp, $sp, 4
     add $v0, $v0, $v1
-    addi $v1, $v0, 0
+    # offset 1
+    addi $v1, $v0, 1
     ori $t2, $t2, 4
     mult $v1, $t2
     mflo $v1
     add $v1, $v1, $t0
     ori $v0, $zero, 3
     sw $v0, 0($v1)
-    lw $v0, 40($t0)
+    lw $v0, 0($t0)
     nop
     addi $sp, $sp, -4
     sw $v0, 0($sp)
@@ -58,8 +60,8 @@ main:
     nop
     addi $sp, $sp, 4
     add $v0, $v0, $v1
-    sw $v0, 40($t0)
-    lw $v0, 0($t0)
+    sw $v0, 0($t0)
+    lw $v0, 1($t0)
     nop
     ori $v0, $zero, 3
     addi $sp, $sp, -4
@@ -74,7 +76,8 @@ main:
     beq $t2, $zero, IF_FALSE_0
     nop
     ori $v0, $zero, 5
-    addi $v1, $v0, 0
+    # offset 1
+    addi $v1, $v0, 1
     ori $t2, $t2, 4
     mult $v1, $t2
     mflo $v1
@@ -91,6 +94,39 @@ IF_END_0:
     #data segment
     .data 0x10004000
 RESULT:
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
     .word 0xffffffff
     .word 0xffffffff
     .word 0xffffffff
