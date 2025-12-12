@@ -9,8 +9,6 @@
 void gen_header(Node *n);
 void gen_fotter();
 void gen_decl(Node *n);
-// void gen_decl_var(Node *n);
-// void gen_decl_array(Node *n);
 void register_array(Node *n);
 void gen_assign(Node *n);
 void gen_loop(Node *n);
@@ -130,11 +128,6 @@ void gen_decl(Node *n) {
     }
 }
 
-// void gen_decl_var(Node *n) {
-//     register_var(n);
-//     // gen_code(n->child->brother);
-// }
-
 void gen_assignment(Node *n) {
     if (n->child->type == IDENT_AST) {
         int offset = lookup_symbol_table(n->child->variable);
@@ -147,18 +140,14 @@ void gen_assignment(Node *n) {
 
         printf("    sw $v0, %d($t0)\n", offset);
     } else {
-        printf("#   This is an ARRAY ASSIGNMENT %s\n", n->child->child->variable);
-
         int offset = lookup_symbol_table(n->child->child->variable);
         if (offset < 0) {
             printf("No variable\n");
             return;
         }
 
-        printf("#   Expression\n");
         gen_code(n->child->child->brother);
 
-        printf("#   offset is %d\n", offset);
         printf("    addi $v1, $v0, %d\n", offset);
         printf("    ori $t2, $t2, 4\n");
         printf("    mult $v1, $t2\n");
