@@ -1,4 +1,4 @@
-{"PROGRAM_0": {"DECLARATIONS_1": {"DECL_STATEMENT_2": {"IDENT_3(x)": {}},"DECLARATIONS_4": {"DECL_STATEMENT_5": {"ARRAY_6": {"IDENT_7(a)": {},"EXPRESSION_8": {"NUMBER_9(10)": {}}}}}},"STATEMENTS_10": {"STATEMENT_11": {"ASSIGNMENT_STATEMENT_12": {"IDENT_13(x)": {},"EXPRESSION_14": {"ADD_OP_15": {"IDENT_16(x)": {},"NUMBER_17(1)": {}}}}}}}}
+{"PROGRAM_0": {"DECLARATIONS_1": {"DECL_STATEMENT_2": {"ARRAY_3": {"IDENT_4(a)": {},"EXPRESSION_5": {"NUMBER_6(10)": {}}}},"DECLARATIONS_7": {"DECL_STATEMENT_8": {"IDENT_9(x)": {}}}},"STATEMENTS_10": {"STATEMENT_11": {"ASSIGNMENT_STATEMENT_12": {"ARRAY_13": {"IDENT_14(a)": {},"EXPRESSION_15": {"NUMBER_16(0)": {}}},"NUMBER_17(10)": {}}},"STATEMENTS_18": {"STATEMENT_19": {"ASSIGNMENT_STATEMENT_20": {"IDENT_21(x)": {},"NUMBER_22(2)": {}}},"STATEMENTS_23": {"STATEMENT_24": {"ASSIGNMENT_STATEMENT_25": {"IDENT_26(x)": {},"EXPRESSION_27": {"ADD_OP_28": {"IDENT_29(x)": {},"NUMBER_30(1)": {}}}}}}}}}}
 INITIAL_GP = 0x10008000 # initial value of global pointer
 INITIAL_SP = 0x7ffffffc # initial value of stack pointer
 # system call service number
@@ -22,7 +22,10 @@ stop: # if syscall return
 .text 0x00001000 # 以降のコードを 0から配置 x00001000
 main:
     la $t0, RESULT
-    lw $v0, 0($t0)
+#   This is an ARRAY ASSIGNMENT
+    ori $v0, $zero, 2
+    sw $v0, 40($t0)
+    lw $v0, 40($t0)
     nop
     addi $sp, $sp, -4
     sw $v0, 0($sp)
@@ -32,7 +35,7 @@ main:
     nop
     addi $sp, $sp, 4
     add $v0, $v0, $v1
-    sw $v0, 0($t0)
+    sw $v0, 40($t0)
     jr $ra
     nop
     

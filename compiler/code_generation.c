@@ -136,15 +136,19 @@ void gen_decl(Node *n) {
 // }
 
 void gen_assignment(Node *n) {
-    int offset = lookup_symbol_table(n->child->variable);
-    if (offset < 0) {
-        printf("No variable\n");
-        return;
+    if (n->child->type == IDENT_AST) {
+        int offset = lookup_symbol_table(n->child->variable);
+        if (offset < 0) {
+            printf("No variable\n");
+            return;
+        }
+
+        gen_code(n->child->brother);
+
+        printf("    sw $v0, %d($t0)\n", offset);
+    } else {
+        printf("#   This is an ARRAY ASSIGNMENT\n");
     }
-
-    gen_code(n->child->brother);
-
-    printf("    sw $v0, %d($t0)\n", offset);
 }
 
 void gen_loop(Node *n) {

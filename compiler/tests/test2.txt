@@ -1,4 +1,6 @@
-define x;
 array a[10];
+define x;
 
+a[0] = 10;
+x = 2;
 x = x + 1;
