@@ -37,7 +37,7 @@ main:
     addi $sp, $sp, 4
     add $v0, $v0, $v1
     sw $v0, 0($t0)
-IF_TRUE:
+IF_TRUE_0:
     lw $v0, 0($t0)
     nop
     addi $sp, $sp, -4
@@ -48,7 +48,7 @@ IF_TRUE:
     nop
     addi $sp, $sp, 4
     slt $t2, $v1, $v0
-    beq $t2, $zero, IF_FALSE
+    beq $t2, $zero, IF_FALSE_0
     nop
     lw $v0, 0($t0)
     nop
@@ -59,13 +59,44 @@ IF_TRUE:
     lw $v0, 0($sp)
     nop
     addi $sp, $sp, 4
-    div $v0, $v1
+    mult $v0, $v1
     mflo $v0
     sw $v0, 0($t0)
-    j IF_END
+    j IF_END_0
     nop
-IF_FALSE:
-IF_END:
+IF_FALSE_0:
+IF_END_0:
+IF_TRUE_1:
+    lw $v0, 0($t0)
+    nop
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
+    ori $v0, $zero, 3
+    addi $v1, $v0, 0
+    lw $v0, 0($sp)
+    nop
+    addi $sp, $sp, 4
+    slt $t2, $v1, $v0
+    beq $t2, $zero, IF_FALSE_1
+    nop
+    lw $v0, 0($t0)
+    nop
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
+    ori $v0, $zero, 2
+    or $v1, $v0, $zero
+    lw $v0, 0($sp)
+    nop
+    addi $sp, $sp, 4
+    mult $v0, $v1
+    mflo $v0
+    sw $v0, 0($t0)
+    ori $v0, $zero, 1
+    sw $v0, 0($t0)
+    j IF_END_1
+    nop
+IF_FALSE_1:
+IF_END_1:
     jr $ra
     nop
     

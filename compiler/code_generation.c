@@ -21,6 +21,8 @@ typedef struct {
 
 Symbol symbol_table[100];
 int symbol_count;
+int if_count;
+int loop_count;
 
 void print_node(Node *n) {
     if (n != NULL) {
@@ -30,6 +32,8 @@ void print_node(Node *n) {
 
 void init() {
     symbol_count = 0;
+    if_count = 0;
+    loop_count = 0;
 }
 
 void gen_header(Node *n) {
@@ -120,34 +124,36 @@ void gen_assignment(Node *n) {
 }
 
 void gen_loop(Node *n) {
-    printf("LOOP:\n");
+    printf("LOOP_%d:\n", loop_count);
     // condition
     gen_code(n->child);
     printf("    beq $t2, $zero, EXIT\n");
     printf("    nop\n");
     // statements
     gen_code(n->child->brother);
-    printf("    j LOOP\n");
+    printf("    j LOOP_%d\n", loop_count);
     printf("    nop\n");
-    printf("EXIT:\n");
+    printf("EXIT_%d:\n", loop_count);
+    loop_count++;
 }
 
 void gen_if(Node *n) {
-    printf("IF_TRUE:\n");
+    printf("IF_TRUE_%d:\n", if_count);
     // condition
     gen_code(n->child);
-    printf("    beq $t2, $zero, IF_FALSE\n");
+    printf("    beq $t2, $zero, IF_FALSE_%d\n", if_count);
     printf("    nop\n");
     // statements
     gen_code(n->child->brother);
-    printf("    j IF_END\n");
+    printf("    j IF_END_%d\n", if_count);
     printf("    nop\n");
-    printf("IF_FALSE:\n");
+    printf("IF_FALSE_%d:\n", if_count);
     // else statements
     if (n->child->brother->brother != NULL) {
         gen_code(n->child->brother->brother);
     }
-    printf("IF_END:\n");
+    printf("IF_END_%d:\n", if_count);
+    if_count++;
 }
 
 void gen_push() {
