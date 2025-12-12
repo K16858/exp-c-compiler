@@ -54,12 +54,13 @@ IF_TRUE:
     nop
     addi $sp, $sp, -4
     sw $v0, 0($sp)
-    ori $v0, $zero, 1
+    ori $v0, $zero, 2
     or $v1, $v0, $zero
     lw $v0, 0($sp)
     nop
     addi $sp, $sp, 4
-    add $v0, $v0, $v1
+    div $v0, $v1
+    mflo $v0
     sw $v0, 0($t0)
     j IF_END
     nop

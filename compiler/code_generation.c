@@ -210,10 +210,12 @@ void gen_expression(Node *n) {
             printf("    sub $v0, $v0, $v1\n");
             break;
         case MUL_OP_AST:
-            printf("    mult $v0, $v0, $v1\n");
+            printf("    mult $v0, $v1\n");
+            printf("    mflo $v0\n");
             break;
         case DIV_OP_AST:
-            printf("    div $v0, $v0, $v1\n");
+            printf("    div $v0, $v1\n");
+            printf("    mflo $v0\n");
             break;
         default:
             break;
