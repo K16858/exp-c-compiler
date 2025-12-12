@@ -8,7 +8,9 @@
 void gen_header(Node *n);
 void gen_fotter();
 void gen_decl(Node *n);
-void gen_decl_var(Node *n);
+// void gen_decl_var(Node *n);
+// void gen_decl_array(Node *n);
+void register_array(Node *n);
 void gen_assign(Node *n);
 void gen_loop(Node *n);
 void gen_expression(Node *n);
@@ -22,6 +24,7 @@ typedef struct {
 
 Symbol symbol_table[100];
 int symbol_count;
+int offset_count;
 int if_count;
 int loop_count;
 
@@ -33,6 +36,7 @@ void print_node(Node *n) {
 
 void init() {
     symbol_count = 0;
+    offset_count = 0;
     if_count = 0;
     loop_count = 0;
 }
@@ -80,17 +84,27 @@ void gen_fotter() {
         "    .data 0x10004000\n"
         "RESULT:\n";
     printf("%s", code);
-    for (int i=0; i < symbol_count; i++) {
+    for (int i=0; i < offset_count; i++) {
         printf("    .word 0xffffffff\n");
     }
 }
 
 void register_var(Node *n) {
     symbol_table[symbol_count].name = n->child->variable;
-    symbol_table[symbol_count].offset = symbol_count * 4;
+    symbol_table[symbol_count].offset = offset_count * 4;
     symbol_table[symbol_count].size = 1;
 
     symbol_count++;
+    offset_count++;
+}
+
+void register_array(Node *n) {
+    symbol_table[symbol_count].name = n->child->child->variable;
+    symbol_table[symbol_count].offset = offset_count * 4;
+    symbol_table[symbol_count].size = n->child->child->brother->child->ivalue;
+
+    symbol_count++;
+    offset_count += n->child->child->brother->child->ivalue;
 }
 
 int lookup_symbol_table(char *target_var) {
@@ -105,18 +119,17 @@ int lookup_symbol_table(char *target_var) {
 
 void gen_decl(Node *n) {
     if (n->child->type == IDENT_AST) {
-        gen_decl_var(n);
+        register_var(n);
     }
     else {
-        print_node(n->child);
-        gen_code(n->child->brother);
+        register_array(n);
     }
 }
 
-void gen_decl_var(Node *n) {
-    register_var(n);
-    gen_code(n->child->brother);
-}
+// void gen_decl_var(Node *n) {
+//     register_var(n);
+//     // gen_code(n->child->brother);
+// }
 
 void gen_assignment(Node *n) {
     int offset = lookup_symbol_table(n->child->variable);
