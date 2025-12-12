@@ -85,8 +85,8 @@ var
 array
     : IDENT L_BRACKET expression R_BRACKET
     {$$ = build_node2(ARRAY_AST, build_ident_node(IDENT_AST, $1), build_node1(EXPRESSION_AST, $3));}
-    | array L_BRACKET expression R_BRACKET
-    {$$ = build_node2(ARRAY_AST, $1, build_node1(EXPRESSION_AST, $3));}
+    | array L_BRACKET NUMBER R_BRACKET
+    {$$ = build_node2(ARRAY_AST, $1, build_node1(NUMBER_AST, $3));}
 ;
 condition
     : expression cond_op expression
