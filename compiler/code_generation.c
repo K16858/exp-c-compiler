@@ -164,7 +164,7 @@ void gen_loop(Node *n) {
     printf("LOOP_%d:\n", loop_count);
     // condition
     gen_code(n->child);
-    printf("    beq $t2, $zero, EXIT\n");
+    printf("    beq $t2, $zero, EXIT_%d\n", loop_count);
     printf("    nop\n");
     // statements
     gen_code(n->child->brother);
