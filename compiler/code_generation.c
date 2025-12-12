@@ -147,7 +147,21 @@ void gen_assignment(Node *n) {
 
         printf("    sw $v0, %d($t0)\n", offset);
     } else {
-        printf("#   This is an ARRAY ASSIGNMENT\n");
+        printf("#   This is an ARRAY ASSIGNMENT %s\n", n->child->child->variable);
+
+        int offset = lookup_symbol_table(n->child->child->variable);
+        if (offset < 0) {
+            printf("No variable\n");
+            return;
+        }
+
+        printf("#   Expression\n");
+        gen_code(n->child->child->brother);
+
+        printf("#   offset is %d\n", offset);
+        printf("    addi $v1, $v0, %d\n", offset);
+        printf("    sw $v0, $v1($t0)\n");
+        gen_code(n->child->brother);
     }
 }
 
