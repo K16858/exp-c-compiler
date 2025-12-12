@@ -63,3 +63,29 @@ quit
 run
 print
 quit
+exit
+run
+print
+print v1
+print $v1
+exit
+run
+print
+exit
+run
+print
+exit
+run
+print
+exit
+run
+print
+exit
+run
+print
+exit
+quit
+exit
+run
+print
+exit

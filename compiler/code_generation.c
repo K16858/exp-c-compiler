@@ -160,8 +160,14 @@ void gen_assignment(Node *n) {
 
         printf("#   offset is %d\n", offset);
         printf("    addi $v1, $v0, %d\n", offset);
-        printf("    sw $v0, $v1($t0)\n");
+        printf("    ori $t2, $t2, 4\n");
+        printf("    mult $v1, $t2\n");
+        printf("    mflo $v1\n");
+        printf("    add $v1, $v1, $t0\n");
+
         gen_code(n->child->brother);
+
+        printf("    sw $v0, 0($v1)\n");
     }
 }
 

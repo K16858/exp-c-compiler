@@ -145,7 +145,7 @@ int main(void) {
     // AST生成完了
     // printf("[*] AST generation is completed\n");
     // AST表示
-    print_tree_in_json(top);
+    // print_tree_in_json(top);
     // コード生成
     gen_code(top);
     return 0;

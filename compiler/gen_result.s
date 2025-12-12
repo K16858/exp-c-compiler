@@ -26,8 +26,12 @@ main:
     ori $v0, $zero, 0
 #   offset is 0
     addi $v1, $v0, 0
-    sw $v0, $v1($t0)
+    ori $t2, $t2, 4
+    mult $v1, $t2
+    mflo $v1
+    add $v1, $v1, $t0
     ori $v0, $zero, 10
+    sw $v0, 0($v1)
     ori $v0, $zero, 2
     sw $v0, 40($t0)
 #   This is an ARRAY ASSIGNMENT a
@@ -44,8 +48,12 @@ main:
     add $v0, $v0, $v1
 #   offset is 0
     addi $v1, $v0, 0
-    sw $v0, $v1($t0)
-    ori $v0, $zero, 1
+    ori $t2, $t2, 4
+    mult $v1, $t2
+    mflo $v1
+    add $v1, $v1, $t0
+    ori $v0, $zero, 3
+    sw $v0, 0($v1)
     lw $v0, 40($t0)
     nop
     addi $sp, $sp, -4
