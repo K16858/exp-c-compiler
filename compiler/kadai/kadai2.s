@@ -21,7 +21,7 @@ stop: # if syscall return
 .text 0x00001000 # 以降のコードを 0から配置 x00001000
 main:
     la $t0, RESULT
-    ori $v0, $zero, 0
+    ori $v0, $zero, 1
     sw $v0, 4($t0)
     ori $v0, $zero, 1
     sw $v0, 0($t0)
@@ -30,7 +30,7 @@ LOOP_0:
     nop
     addi $sp, $sp, -4
     sw $v0, 0($sp)
-    ori $v0, $zero, 11
+    ori $v0, $zero, 6
     addi $v1, $v0, 0
     lw $v0, 0($sp)
     nop
@@ -48,7 +48,8 @@ LOOP_0:
     lw $v0, 0($sp)
     nop
     addi $sp, $sp, 4
-    add $v0, $v0, $v1
+    mult $v0, $v1
+    mflo $v0
     sw $v0, 4($t0)
     lw $v0, 0($t0)
     nop
