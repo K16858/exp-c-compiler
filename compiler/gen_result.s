@@ -21,10 +21,7 @@ stop: # if syscall return
 .text 0x00001000 # 以降のコードを 0から配置 x00001000
 main:
     la $t0, RESULT
-#   This is an ARRAY ASSIGNMENT a
-#   Expression
     ori $v0, $zero, 0
-#   offset is 0
     addi $v1, $v0, 0
     ori $t2, $t2, 4
     mult $v1, $t2
@@ -34,8 +31,6 @@ main:
     sw $v0, 0($v1)
     ori $v0, $zero, 2
     sw $v0, 40($t0)
-#   This is an ARRAY ASSIGNMENT a
-#   Expression
     lw $v0, 40($t0)
     nop
     addi $sp, $sp, -4
@@ -46,7 +41,6 @@ main:
     nop
     addi $sp, $sp, 4
     add $v0, $v0, $v1
-#   offset is 0
     addi $v1, $v0, 0
     ori $t2, $t2, 4
     mult $v1, $t2
@@ -65,6 +59,32 @@ main:
     addi $sp, $sp, 4
     add $v0, $v0, $v1
     sw $v0, 40($t0)
+    lw $v0, 0($t0)
+    nop
+    ori $v0, $zero, 3
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
+    ori $v0, $zero, 3
+    addi $v1, $v0, 0
+    lw $v0, 0($sp)
+    nop
+    addi $sp, $sp, 4
+    xor $t2, $v0, $v1
+    slti $t2, $t2, 1
+    beq $t2, $zero, IF_FALSE_0
+    nop
+    ori $v0, $zero, 5
+    addi $v1, $v0, 0
+    ori $t2, $t2, 4
+    mult $v1, $t2
+    mflo $v1
+    add $v1, $v1, $t0
+    ori $v0, $zero, 22
+    sw $v0, 0($v1)
+    j IF_END_0
+    nop
+IF_FALSE_0:
+IF_END_0:
     jr $ra
     nop
     
