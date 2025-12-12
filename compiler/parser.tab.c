@@ -538,10 +538,10 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    22,    22,    26,    34,    38,    40,    44,    46,    50,
-      52,    54,    56,    58,    62,    66,    68,    72,    74,    78,
-      80,    82,    86,    88,    92,    96,    98,   102,   104,   108,
-     110,   114,   116,   120,   122,   126,   128,   132,   134,   136
+       0,    22,    22,    26,    30,    34,    36,    40,    42,    46,
+      48,    50,    52,    54,    58,    62,    64,    68,    70,    74,
+      76,    78,    82,    84,    88,    92,    94,    98,   100,   104,
+     106,   110,   112,   116,   118,   122,   124,   128,   130,   132
 };
 #endif
 
@@ -1159,232 +1159,228 @@ yyreduce:
 
   case 3: /* decl_function: FUNCTION IDENT L_PARAN IDENT R_PARAN L_BRACE statements R_BRACE  */
 #line 27 "parser.y"
-    {(yyval.np) = build_node2(DECL_FUNCTION_AST, 
-                      build_node2(IDENT_AST, 
-                                  build_ident_node(IDENT_AST, (yyvsp[-6].sp)),
-                                  build_ident_node(IDENT_AST, (yyvsp[-4].sp))),
-                      (yyvsp[-1].np));}
-#line 1168 "parser.tab.c"
+    {(yyval.np) = build_node2(DECL_FUNCTION_AST, build_node2(IDENT_AST, build_ident_node(IDENT_AST, (yyvsp[-6].sp)), build_ident_node(IDENT_AST, (yyvsp[-4].sp))), (yyvsp[-1].np));}
+#line 1164 "parser.tab.c"
     break;
 
   case 4: /* function: IDENT L_PARAN var R_PARAN SEMIC  */
-#line 35 "parser.y"
+#line 31 "parser.y"
     {(yyval.np) = build_node2(FUNCTION_AST, build_ident_node(IDENT_AST, (yyvsp[-4].sp)), (yyvsp[-2].np));}
-#line 1174 "parser.tab.c"
+#line 1170 "parser.tab.c"
     break;
 
   case 5: /* declarations: decl_statement declarations  */
-#line 39 "parser.y"
+#line 35 "parser.y"
     {(yyval.np) = build_node2(DECLARATIONS_AST, (yyvsp[-1].np), (yyvsp[0].np));}
-#line 1180 "parser.tab.c"
+#line 1176 "parser.tab.c"
     break;
 
   case 6: /* declarations: decl_statement  */
-#line 41 "parser.y"
+#line 37 "parser.y"
     {(yyval.np) = build_node1(DECLARATIONS_AST, (yyvsp[0].np));}
-#line 1186 "parser.tab.c"
+#line 1182 "parser.tab.c"
     break;
 
   case 7: /* statements: statement statements  */
-#line 45 "parser.y"
+#line 41 "parser.y"
     {(yyval.np) = build_node2(STATEMENTS_AST, (yyvsp[-1].np), (yyvsp[0].np));}
-#line 1192 "parser.tab.c"
+#line 1188 "parser.tab.c"
     break;
 
   case 8: /* statements: statement  */
-#line 47 "parser.y"
+#line 43 "parser.y"
     {(yyval.np) = build_node1(STATEMENTS_AST, (yyvsp[0].np));}
-#line 1198 "parser.tab.c"
+#line 1194 "parser.tab.c"
     break;
 
   case 9: /* statement: assignment_statement  */
-#line 51 "parser.y"
+#line 47 "parser.y"
     {(yyval.np) = build_node1(STATEMENT_AST, (yyvsp[0].np));}
-#line 1204 "parser.tab.c"
+#line 1200 "parser.tab.c"
     break;
 
   case 10: /* statement: loop_statement  */
-#line 53 "parser.y"
+#line 49 "parser.y"
     {(yyval.np) = build_node1(STATEMENT_AST, (yyvsp[0].np));}
-#line 1210 "parser.tab.c"
+#line 1206 "parser.tab.c"
     break;
 
   case 11: /* statement: if_statement  */
-#line 55 "parser.y"
+#line 51 "parser.y"
     {(yyval.np) = build_node1(STATEMENT_AST, (yyvsp[0].np));}
-#line 1216 "parser.tab.c"
+#line 1212 "parser.tab.c"
     break;
 
   case 12: /* statement: decl_function  */
-#line 57 "parser.y"
+#line 53 "parser.y"
     {(yyval.np) = build_node1(STATEMENT_AST, (yyvsp[0].np));}
-#line 1222 "parser.tab.c"
+#line 1218 "parser.tab.c"
     break;
 
   case 13: /* statement: function  */
-#line 59 "parser.y"
+#line 55 "parser.y"
     {(yyval.np) = build_node1(STATEMENT_AST, (yyvsp[0].np));}
-#line 1228 "parser.tab.c"
+#line 1224 "parser.tab.c"
     break;
 
   case 14: /* loop_statement: LOOP L_PARAN condition R_PARAN L_BRACE statements R_BRACE  */
-#line 63 "parser.y"
+#line 59 "parser.y"
     {(yyval.np) = build_node2(LOOP_STATEMENT_AST, (yyvsp[-4].np), (yyvsp[-1].np));}
-#line 1234 "parser.tab.c"
+#line 1230 "parser.tab.c"
     break;
 
   case 15: /* if_statement: IF L_PARAN condition R_PARAN L_BRACE statements R_BRACE  */
-#line 67 "parser.y"
+#line 63 "parser.y"
     {(yyval.np) = build_node2(IF_STATEMENT_AST, (yyvsp[-4].np), (yyvsp[-1].np));}
-#line 1240 "parser.tab.c"
+#line 1236 "parser.tab.c"
     break;
 
   case 16: /* if_statement: IF L_PARAN condition R_PARAN L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE  */
-#line 69 "parser.y"
+#line 65 "parser.y"
     {(yyval.np) = build_node2(IF_STATEMENT_AST, (yyvsp[-8].np), build_node2(STATEMENTS_AST, (yyvsp[-5].np), (yyvsp[-1].np)));}
-#line 1246 "parser.tab.c"
+#line 1242 "parser.tab.c"
     break;
 
   case 17: /* decl_statement: DEFINE IDENT SEMIC  */
-#line 73 "parser.y"
+#line 69 "parser.y"
     {(yyval.np) = build_node1(DECL_STATEMENT_AST, build_ident_node(IDENT_AST, (yyvsp[-1].sp)));}
-#line 1252 "parser.tab.c"
+#line 1248 "parser.tab.c"
     break;
 
   case 18: /* decl_statement: ARRAY array SEMIC  */
-#line 75 "parser.y"
+#line 71 "parser.y"
     {(yyval.np) = build_node1(DECL_STATEMENT_AST, (yyvsp[-1].np));}
-#line 1258 "parser.tab.c"
+#line 1254 "parser.tab.c"
     break;
 
   case 19: /* var: IDENT  */
-#line 79 "parser.y"
+#line 75 "parser.y"
     {(yyval.np) = build_ident_node(IDENT_AST, (yyvsp[0].sp));}
-#line 1264 "parser.tab.c"
+#line 1260 "parser.tab.c"
     break;
 
   case 20: /* var: NUMBER  */
-#line 81 "parser.y"
+#line 77 "parser.y"
     {(yyval.np) = build_num_node(NUMBER_AST, (yyvsp[0].ival));}
-#line 1270 "parser.tab.c"
+#line 1266 "parser.tab.c"
     break;
 
   case 21: /* var: array  */
-#line 83 "parser.y"
+#line 79 "parser.y"
     {(yyval.np) = (yyvsp[0].np);}
-#line 1276 "parser.tab.c"
+#line 1272 "parser.tab.c"
     break;
 
   case 22: /* array: IDENT L_BRACKET expression R_BRACKET  */
-#line 87 "parser.y"
+#line 83 "parser.y"
     {(yyval.np) = build_node2(ARRAY_AST, build_ident_node(IDENT_AST, (yyvsp[-3].sp)), build_node1(EXPRESSION_AST, (yyvsp[-1].np)));}
-#line 1282 "parser.tab.c"
+#line 1278 "parser.tab.c"
     break;
 
   case 23: /* array: array L_BRACKET expression R_BRACKET  */
-#line 89 "parser.y"
+#line 85 "parser.y"
     {(yyval.np) = build_node2(ARRAY_AST, (yyvsp[-3].np), build_node1(EXPRESSION_AST, (yyvsp[-1].np)));}
-#line 1288 "parser.tab.c"
+#line 1284 "parser.tab.c"
     break;
 
   case 24: /* condition: expression cond_op expression  */
-#line 93 "parser.y"
+#line 89 "parser.y"
     {(yyval.np) = build_node2(CONDITION_AST, (yyvsp[-1].np), build_node2(EXPRESSION_AST, build_node1(EXPRESSION_AST, (yyvsp[-2].np)), build_node1(EXPRESSION_AST, (yyvsp[0].np))));}
-#line 1294 "parser.tab.c"
+#line 1290 "parser.tab.c"
     break;
 
   case 25: /* assignment_statement: IDENT ASSIGN expression SEMIC  */
-#line 97 "parser.y"
+#line 93 "parser.y"
     {(yyval.np) = build_node2(ASSIGNMENT_STATEMENT_AST, build_ident_node(IDENT_AST, (yyvsp[-3].sp)), (yyvsp[-1].np));}
-#line 1300 "parser.tab.c"
+#line 1296 "parser.tab.c"
     break;
 
   case 26: /* assignment_statement: array ASSIGN expression SEMIC  */
-#line 99 "parser.y"
+#line 95 "parser.y"
     {(yyval.np) = build_node2(ASSIGNMENT_STATEMENT_AST, (yyvsp[-3].np), (yyvsp[-1].np));}
-#line 1306 "parser.tab.c"
+#line 1302 "parser.tab.c"
     break;
 
   case 27: /* expression: expression add_op term  */
-#line 103 "parser.y"
+#line 99 "parser.y"
     {(yyval.np) = build_node1(EXPRESSION_AST, build_node2((yyvsp[-1].np)->type, (yyvsp[-2].np), (yyvsp[0].np)));}
-#line 1312 "parser.tab.c"
+#line 1308 "parser.tab.c"
     break;
 
   case 28: /* expression: term  */
-#line 105 "parser.y"
+#line 101 "parser.y"
     {(yyval.np) = (yyvsp[0].np);}
-#line 1318 "parser.tab.c"
+#line 1314 "parser.tab.c"
     break;
 
   case 29: /* term: term mul_op factor  */
-#line 109 "parser.y"
+#line 105 "parser.y"
     {(yyval.np) = build_node1(TERM_AST, build_node2((yyvsp[-1].np)->type, (yyvsp[-2].np), (yyvsp[0].np)));}
-#line 1324 "parser.tab.c"
+#line 1320 "parser.tab.c"
     break;
 
   case 30: /* term: factor  */
-#line 111 "parser.y"
+#line 107 "parser.y"
     {(yyval.np) = (yyvsp[0].np);}
-#line 1330 "parser.tab.c"
+#line 1326 "parser.tab.c"
     break;
 
   case 31: /* factor: var  */
-#line 115 "parser.y"
+#line 111 "parser.y"
     {(yyval.np) = (yyvsp[0].np);}
-#line 1336 "parser.tab.c"
+#line 1332 "parser.tab.c"
     break;
 
   case 32: /* factor: L_PARAN expression R_PARAN  */
-#line 117 "parser.y"
+#line 113 "parser.y"
     {(yyval.np) = (yyvsp[-1].np);}
-#line 1342 "parser.tab.c"
+#line 1338 "parser.tab.c"
     break;
 
   case 33: /* add_op: ADD  */
-#line 121 "parser.y"
+#line 117 "parser.y"
     {(yyval.np) = build_node0(ADD_OP_AST);}
-#line 1348 "parser.tab.c"
+#line 1344 "parser.tab.c"
     break;
 
   case 34: /* add_op: SUB  */
-#line 123 "parser.y"
+#line 119 "parser.y"
     {(yyval.np) = build_node0(SUB_OP_AST);}
-#line 1354 "parser.tab.c"
+#line 1350 "parser.tab.c"
     break;
 
   case 35: /* mul_op: MUL  */
-#line 127 "parser.y"
+#line 123 "parser.y"
     {(yyval.np) = build_node0(MUL_OP_AST);}
-#line 1360 "parser.tab.c"
+#line 1356 "parser.tab.c"
     break;
 
   case 36: /* mul_op: DIV  */
-#line 129 "parser.y"
+#line 125 "parser.y"
     {(yyval.np) = build_node0(DIV_OP_AST);}
-#line 1366 "parser.tab.c"
+#line 1362 "parser.tab.c"
     break;
 
   case 37: /* cond_op: EQ  */
-#line 133 "parser.y"
+#line 129 "parser.y"
     {(yyval.np) = build_node0(EQ_OP_AST);}
-#line 1372 "parser.tab.c"
+#line 1368 "parser.tab.c"
     break;
 
   case 38: /* cond_op: LT  */
-#line 135 "parser.y"
+#line 131 "parser.y"
     {(yyval.np) = build_node0(LT_OP_AST);}
-#line 1378 "parser.tab.c"
+#line 1374 "parser.tab.c"
     break;
 
   case 39: /* cond_op: GT  */
-#line 137 "parser.y"
+#line 133 "parser.y"
     {(yyval.np) = build_node0(GT_OP_AST);}
-#line 1384 "parser.tab.c"
+#line 1380 "parser.tab.c"
     break;
 
 
-#line 1388 "parser.tab.c"
+#line 1384 "parser.tab.c"
 
       default: break;
     }
@@ -1577,5 +1573,5 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 139 "parser.y"
+#line 135 "parser.y"
 

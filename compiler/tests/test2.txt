@@ -1,19 +1,5 @@
 define x;
-array b[10];
-array c[5][5];
+array a[10];
 
-func function (args) {
-    if (x < 0) {
-        a = a + 1;
-    }
-}
-
-x = 1;
-if (x < 0) {
-    a = a + 1;
-    function(a);
-}
-
-while (a > 1) {
-    a = b[1] - 1;
-}
+a[0] = 5;
+a[1] = a[0] + 10;

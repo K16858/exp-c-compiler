@@ -7,6 +7,7 @@
 
 void gen_header(Node *n);
 void gen_fotter();
+void gen_decl(Node *n);
 void gen_decl_var(Node *n);
 void gen_assign(Node *n);
 void gen_loop(Node *n);
@@ -100,6 +101,16 @@ int lookup_symbol_table(char *target_var) {
     }
 
     return -1;
+}
+
+void gen_decl(Node *n) {
+    if (n->child->type == IDENT_AST) {
+        gen_decl_var(n);
+    }
+    else {
+        print_node(n->child);
+        gen_code(n->child->brother);
+    }
 }
 
 void gen_decl_var(Node *n) {
@@ -246,7 +257,7 @@ void gen_code(Node *n) {
             gen_code(n->child->brother);
             break;
         case DECL_STATEMENT_AST:
-            gen_decl_var(n);
+            gen_decl(n);
             break;
         case ASSIGNMENT_STATEMENT_AST:
             gen_assignment(n);

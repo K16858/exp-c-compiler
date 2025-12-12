@@ -24,11 +24,7 @@ program
 ;
 decl_function
     : FUNCTION IDENT L_PARAN IDENT R_PARAN L_BRACE statements R_BRACE
-    {$$ = build_node2(DECL_FUNCTION_AST, 
-                      build_node2(IDENT_AST, 
-                                  build_ident_node(IDENT_AST, $2),
-                                  build_ident_node(IDENT_AST, $4)),
-                      $7);}
+    {$$ = build_node2(DECL_FUNCTION_AST, build_node2(IDENT_AST, build_ident_node(IDENT_AST, $2), build_ident_node(IDENT_AST, $4)), $7);}
 ;
 function
     : IDENT L_PARAN var R_PARAN SEMIC
