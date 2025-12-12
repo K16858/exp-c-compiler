@@ -138,20 +138,29 @@ void gen_loop(Node *n) {
 }
 
 void gen_if(Node *n) {
-    printf("IF_TRUE_%d:\n", if_count);
     // condition
     gen_code(n->child);
     printf("    beq $t2, $zero, IF_FALSE_%d\n", if_count);
     printf("    nop\n");
-    // statements
-    gen_code(n->child->brother);
-    printf("    j IF_END_%d\n", if_count);
-    printf("    nop\n");
-    printf("IF_FALSE_%d:\n", if_count);
-    // else statements
-    if (n->child->brother->brother != NULL) {
-        gen_code(n->child->brother->brother);
+    
+    //  else
+    if (n->child->brother->type == STATEMENTS_AST) {
+        gen_code(n->child->brother->child);
+        printf("    j IF_END_%d\n", if_count);
+        printf("    nop\n");
+        printf("IF_FALSE_%d:\n", if_count);
+
+        if (n->child->brother->child->brother != NULL) {
+            gen_code(n->child->brother->child->brother);
+        }
+    } else {
+        // no else
+        gen_code(n->child->brother);
+        printf("    j IF_END_%d\n", if_count);
+        printf("    nop\n");
+        printf("IF_FALSE_%d:\n", if_count);
     }
+    
     printf("IF_END_%d:\n", if_count);
     if_count++;
 }
