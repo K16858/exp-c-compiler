@@ -21,15 +21,15 @@ stop: # if syscall return
 .text 0x00001000 # 以降のコードを 0から配置 x00001000
 main:
     la $t0, RESULT
-    ori $v0, $zero, 0
-    # offset 4
-    sll $v0, $v0, 2
-    addi $v0, $v0, 4
-    add $v1, $v0, $t0
-    ori $v0, $zero, 10
-    sw $v0, 0($v1)
-    ori $v0, $zero, 2
+    ori $v0, $zero, 100
     sw $v0, 0($t0)
+    ori $v0, $zero, 1
+    sw $v0, 4($t0)
+LOOP_0:
+    lw $v0, 4($t0)
+    nop
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
     lw $v0, 0($t0)
     nop
     addi $sp, $sp, -4
@@ -40,78 +40,251 @@ main:
     nop
     addi $sp, $sp, 4
     add $v0, $v0, $v1
-    # offset 4
-    sll $v0, $v0, 2
-    addi $v0, $v0, 4
-    add $v1, $v0, $t0
-    ori $v0, $zero, 3
-    sw $v0, 0($v1)
-    lw $v0, 0($t0)
-    nop
-    addi $sp, $sp, -4
-    sw $v0, 0($sp)
-    ori $v0, $zero, 1
-    or $v1, $v0, $zero
-    lw $v0, 0($sp)
-    nop
-    addi $sp, $sp, 4
-    add $v0, $v0, $v1
-    sw $v0, 0($t0)
-    ori $v0, $zero, 3
-    sll $v0, $v0, 2
-    addi $v0, $v0, 4
-    add $v0, $v0, $t0
-    lw $v0, 0($v0)
-    nop
-    addi $sp, $sp, -4
-    sw $v0, 0($sp)
-    ori $v0, $zero, 3
     addi $v1, $v0, 0
     lw $v0, 0($sp)
     nop
     addi $sp, $sp, 4
-    xor $t2, $v0, $v1
-    slti $t2, $t2, 1
-    beq $t2, $zero, IF_FALSE_0
+    slt $t2, $v0, $v1
+    beq $t2, $zero, EXIT_0
     nop
-    ori $v0, $zero, 4
-    # offset 4
-    sll $v0, $v0, 2
-    addi $v0, $v0, 4
-    add $v1, $v0, $t0
-    ori $v0, $zero, 4
-    sw $v0, 0($v1)
-    j IF_END_0
+    lw $v0, 4($t0)
     nop
-IF_FALSE_0:
-    ori $v0, $zero, 5
-    # offset 4
+    # offset 16
     sll $v0, $v0, 2
-    addi $v0, $v0, 4
+    addi $v0, $v0, 16
     add $v1, $v0, $t0
-    ori $v0, $zero, 5
+    ori $v0, $zero, 1
     sw $v0, 0($v1)
-    ori $v0, $zero, 6
-    # offset 4
+    lw $v0, 4($t0)
+    nop
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
+    ori $v0, $zero, 1
+    or $v1, $v0, $zero
+    lw $v0, 0($sp)
+    nop
+    addi $sp, $sp, 4
+    add $v0, $v0, $v1
+    sw $v0, 4($t0)
+    j LOOP_0
+    nop
+EXIT_0:
+    ori $v0, $zero, 2
+    sw $v0, 4($t0)
+LOOP_1:
+    lw $v0, 4($t0)
+    nop
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
+    lw $v0, 0($t0)
+    nop
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
+    ori $v0, $zero, 2
+    or $v1, $v0, $zero
+    lw $v0, 0($sp)
+    nop
+    addi $sp, $sp, 4
+    div $v0, $v1
+    mflo $v0
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
+    ori $v0, $zero, 1
+    or $v1, $v0, $zero
+    lw $v0, 0($sp)
+    nop
+    addi $sp, $sp, 4
+    add $v0, $v0, $v1
+    addi $v1, $v0, 0
+    lw $v0, 0($sp)
+    nop
+    addi $sp, $sp, 4
+    slt $t2, $v0, $v1
+    beq $t2, $zero, EXIT_1
+    nop
+    ori $v0, $zero, 2
+    sw $v0, 8($t0)
+LOOP_2:
+    lw $v0, 8($t0)
+    nop
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
+    lw $v0, 0($t0)
+    nop
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
+    lw $v0, 4($t0)
+    nop
+    or $v1, $v0, $zero
+    lw $v0, 0($sp)
+    nop
+    addi $sp, $sp, 4
+    div $v0, $v1
+    mflo $v0
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
+    ori $v0, $zero, 1
+    or $v1, $v0, $zero
+    lw $v0, 0($sp)
+    nop
+    addi $sp, $sp, 4
+    add $v0, $v0, $v1
+    addi $v1, $v0, 0
+    lw $v0, 0($sp)
+    nop
+    addi $sp, $sp, 4
+    slt $t2, $v0, $v1
+    beq $t2, $zero, EXIT_2
+    nop
+    lw $v0, 4($t0)
+    nop
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
+    lw $v0, 8($t0)
+    nop
+    or $v1, $v0, $zero
+    lw $v0, 0($sp)
+    nop
+    addi $sp, $sp, 4
+    mult $v0, $v1
+    mflo $v0
+    sw $v0, 12($t0)
+    lw $v0, 12($t0)
+    nop
+    # offset 16
     sll $v0, $v0, 2
-    addi $v0, $v0, 4
+    addi $v0, $v0, 16
     add $v1, $v0, $t0
-    ori $v0, $zero, 6
+    ori $v0, $zero, 0
     sw $v0, 0($v1)
-    ori $v0, $zero, 7
-    # offset 4
-    sll $v0, $v0, 2
-    addi $v0, $v0, 4
-    add $v1, $v0, $t0
-    ori $v0, $zero, 8
-    sw $v0, 0($v1)
-IF_END_0:
+    lw $v0, 8($t0)
+    nop
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
+    ori $v0, $zero, 1
+    or $v1, $v0, $zero
+    lw $v0, 0($sp)
+    nop
+    addi $sp, $sp, 4
+    add $v0, $v0, $v1
+    sw $v0, 8($t0)
+    j LOOP_2
+    nop
+EXIT_2:
+    lw $v0, 4($t0)
+    nop
+    addi $sp, $sp, -4
+    sw $v0, 0($sp)
+    ori $v0, $zero, 1
+    or $v1, $v0, $zero
+    lw $v0, 0($sp)
+    nop
+    addi $sp, $sp, 4
+    add $v0, $v0, $v1
+    sw $v0, 4($t0)
+    j LOOP_1
+    nop
+EXIT_1:
     jr $ra
     nop
     
     #data segment
     .data 0x10004000
 RESULT:
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
+    .word 0xffffffff
     .word 0xffffffff
     .word 0xffffffff
     .word 0xffffffff
