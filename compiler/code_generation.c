@@ -218,6 +218,22 @@ void gen_pop() {
     printf("    addi $sp, $sp, 4\n");
 }
 
+void gen_array(Node *n) {
+    int base_offset = lookup_symbol_table(n->child->variable);
+    if (base_offset < 0) {
+        printf("# No array\n");
+        return;
+    }
+
+    gen_code(n->child->brother->child);
+
+    printf("    sll $v0, $v0, 2\n");
+    printf("    addi $v0, $v0, %d\n", base_offset);
+    printf("    add $v0, $v0, $t0\n");
+    printf("    lw $v0, 0($v0)\n");
+    printf("    nop\n");
+}
+
 void gen_var(Node *n) {
     int offset = lookup_symbol_table(n->variable);
     printf("    lw $v0, %d($t0)\n", offset);
@@ -311,6 +327,9 @@ void gen_code(Node *n) {
             break;
         case NUMBER_AST:
             gen_number(n);
+            break;
+        case ARRAY_AST:
+            gen_array(n);
             break;
         case ADD_OP_AST:
         case SUB_OP_AST:

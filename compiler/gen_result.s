@@ -57,9 +57,12 @@ main:
     addi $sp, $sp, 4
     add $v0, $v0, $v1
     sw $v0, 0($t0)
-    lw $v0, 4($t0)
-    nop
     ori $v0, $zero, 3
+    sll $v0, $v0, 2
+    addi $v0, $v0, 4
+    add $v0, $v0, $t0
+    lw $v0, 0($v0)
+    nop
     addi $sp, $sp, -4
     sw $v0, 0($sp)
     ori $v0, $zero, 3
