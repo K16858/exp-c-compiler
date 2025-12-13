@@ -95,11 +95,42 @@ void gen_fotter() {
     }
 }
 
+void get_array_info(Node *n, int *dims, int *dim_count, char **name) {
+    if (n->type != ARRAY_AST) {
+        return;
+    }
+    
+    if (n->child->type == IDENT_AST) {
+        *name = n->child->variable;
+        dims[0] = n->child->brother->child->ivalue;
+        *dim_count = 1;
+    } 
+
+    else if (n->child->type == ARRAY_AST) {
+        get_array_info(n->child, dims, dim_count, name);
+        dims[*dim_count] = n->child->brother->child->ivalue;
+        (*dim_count)++;
+    }
+}
+
 void register_var(Node *n) {
-    symbol_table[symbol_count].name = n->child->variable;
+    char *name = NULL;
+    int dims[10];
+    int dim_count = 0;
+
+    get_array_info(n->child, dims, &dim_count, &name);
+
+    symbol_table[symbol_count].name = name;
     symbol_table[symbol_count].offset = offset_count * 4;
-    symbol_table[symbol_count].size = 1;
     symbol_table[symbol_count].is_array = false;
+    symbol_table[symbol_count].dimensions = dim_count;
+
+    int size = 1;
+    for (int i=0; i < dim_count; i++) {
+        symbol_table[symbol_count].dimension_sizes[i] = dims[i];
+        size *= dims[i];
+    }
+    symbol_table[symbol_count].size = size;
 
     symbol_count++;
     offset_count++;
