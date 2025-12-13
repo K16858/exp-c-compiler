@@ -19,6 +19,8 @@ typedef struct {
     char *name;
     int offset;
     int size;
+    int dimensions;
+    int dimension_sizes[10];
     bool is_array;
 } Symbol;
 
@@ -151,8 +153,6 @@ void gen_assignment(Node *n) {
         }
 
         gen_code(n->child->child->brother);
-
-        printf("    # offset %d\n", offset);
 
         printf("    sll $v0, $v0, 2\n");
         printf("    addi $v0, $v0, %d\n", offset);
