@@ -86,14 +86,16 @@ void gen_fotter() {
         "    .data 0x10004000\n"
         "RESULT:\n";
     printf("%s", code);
-    for (int i=0; i < offset_count * 4; i++) {
-        printf("    .word 0xffffffff\n");
+    for (int i=0; i < symbol_count; i++) {
+        for (int j=0; j < symbol_table[i].size; j++) {
+            printf("    .word 0xffffffff\n");
+        }
     }
 }
 
 void register_var(Node *n) {
     symbol_table[symbol_count].name = n->child->variable;
-    symbol_table[symbol_count].offset = offset_count;
+    symbol_table[symbol_count].offset = offset_count * 4;
     symbol_table[symbol_count].size = 1;
     symbol_table[symbol_count].is_array = false;
 
@@ -103,7 +105,7 @@ void register_var(Node *n) {
 
 void register_array(Node *n) {
     symbol_table[symbol_count].name = n->child->child->variable;
-    symbol_table[symbol_count].offset = offset_count;
+    symbol_table[symbol_count].offset = offset_count * 4;
     symbol_table[symbol_count].size = n->child->child->brother->child->ivalue;
     symbol_table[symbol_count].is_array = true;
 
@@ -152,11 +154,9 @@ void gen_assignment(Node *n) {
 
         printf("    # offset %d\n", offset);
 
-        printf("    addi $v1, $v0, %d\n", offset);
-        printf("    ori $t2, $t2, 4\n");
-        printf("    mult $v1, $t2\n");
-        printf("    mflo $v1\n");
-        printf("    add $v1, $v1, $t0\n");
+        printf("    sll $v0, $v0, 2\n");
+        printf("    addi $v0, $v0, %d\n", offset);
+        printf("    add $v1, $v0, $t0\n");
 
         gen_code(n->child->brother);
 
