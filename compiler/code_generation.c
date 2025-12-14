@@ -230,7 +230,7 @@ void gen_assignment(Node *n) {
 
         Node *indices[10];
         int index_count = 0;
-        get_array_indices(n, indices, &index_count);
+        get_array_indices(n->child, indices, &index_count);
 
         // first index
         gen_code(indices[0]);
