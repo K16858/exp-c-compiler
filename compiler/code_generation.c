@@ -225,7 +225,7 @@ void gen_assignment(Node *n) {
 
         printf("    sw $v0, %d($t0)\n", offset);
     } else {
-        Node *temp = n;
+        Node *temp = n->child;
         while (temp->child->type == ARRAY_AST) {
             temp = temp->child;
         }
