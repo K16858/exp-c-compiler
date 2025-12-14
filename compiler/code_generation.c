@@ -251,7 +251,7 @@ void gen_assignment(Node *n) {
 
         printf("    sll $v0, $v0, 2\n");
         printf("    addi $v0, $v0, %d\n", base_offset);
-        printf("    add $v0, $v0, $t0\n");
+        printf("    add $v1, $v0, $t0\n");
 
         gen_code(n->child->brother);
 
