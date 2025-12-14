@@ -1,9 +1,0 @@
-Word: word1
-Word: word2
-Word: word3
-Word: word4
-Word: word5
-Word: word6
-#words=6
-#chars=30
-#lines=2

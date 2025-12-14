@@ -1,5 +1,0 @@
-define sum1, sum2, sum3, sum4;
-define sum5, sum6;
-sum1 = 100;
-sum2 = 1000;
-sum3 = 10000;
