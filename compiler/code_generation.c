@@ -113,6 +113,22 @@ void get_array_info(Node *n, int *dims, int *dim_count, char **name) {
     }
 }
 
+void get_array_indices(Node *n, Node **indices, int *index_count) {
+    if (n->type != ARRAY_AST) {
+        return;
+    }
+    
+    if (n->child->type == IDENT_AST) {
+        indices[0] = n->child->brother->child;
+        *index_count = 1;
+    } 
+    else if (n->child->type == ARRAY_AST) {
+        get_array_indices(n->child, indices, index_count);
+        indices[*index_count] = n->child->brother->child;
+        (*index_count)++;
+    }
+}
+
 void register_var(Node *n) {
     char *name = NULL;
     int dims[10];
@@ -255,13 +271,49 @@ void gen_pop() {
 }
 
 void gen_array(Node *n) {
-    int base_offset = lookup_symbol_table(n->child->variable);
-    if (base_offset < 0) {
+    Node *temp = n;
+    while (temp->child->type == ARRAY_AST) {
+        temp = temp->child;
+    }
+    char *name = temp->child->variable;
+
+    // int base_offset = lookup_symbol_table(n->child->variable);
+    // if (base_offset < 0) {
+    //     printf("# No array\n");
+    //     return;
+    // }
+
+    int index = lookup_symbol_index(var_name);
+    if (index < 0) {
         printf("# No array\n");
         return;
     }
+    
+    int base_offset = symbol_table[index].offset;
+    int dimensions = symbol_table[index].dimensions;
 
-    gen_code(n->child->brother->child);
+    Node *indices[10];
+    int index_count = 0;
+    get_array_indices(n, indices, &index_count);
+
+    // gen_code(n->child->brother->child);
+
+    // first index
+    gen_code(indices[0]);
+
+    // calculate offset
+    for (int i = 1; i < index_count; i++) {
+        printf("    ori $v1, $zero, %d\n", symbol_table[index].dimension_sizes[i]);
+        printf("    mult $v0, $v1\n");
+        printf("    mflo $v0\n");
+
+        gen_push();
+        gen_code(indices[i]);
+        printf("    or $v1, $v0, $zero\n");
+        gen_pop();
+        
+        printf("    add $v0, $v0, $v1\n");
+    }
 
     printf("    sll $v0, $v0, 2\n");
     printf("    addi $v0, $v0, %d\n", base_offset);
