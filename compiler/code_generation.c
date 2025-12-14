@@ -155,13 +155,34 @@ void register_var(Node *n) {
 }
 
 void register_array(Node *n) {
-    symbol_table[symbol_count].name = n->child->child->variable;
-    symbol_table[symbol_count].offset = offset_count * 4;
-    symbol_table[symbol_count].size = n->child->child->brother->child->ivalue;
-    symbol_table[symbol_count].is_array = true;
+    char *name = NULL;
+    int dims[10];
+    int dim_count = 0;
 
+    get_array_info(n->child, dims, &dim_count, &name);
+    
+    symbol_table[symbol_count].name = name;
+    symbol_table[symbol_count].offset = offset_count * 4;
+    symbol_table[symbol_count].is_array = true;
+    symbol_table[symbol_count].dimensions = dim_count;
+    
+    // symbol_table[symbol_count].name = n->child->child->variable;
+    // symbol_table[symbol_count].offset = offset_count * 4;
+    // symbol_table[symbol_count].size = n->child->child->brother->child->ivalue;
+    // symbol_table[symbol_count].is_array = true;
+
+    int total_size = 1;
+    for (int i = 0; i < dim_count; i++) {
+        symbol_table[symbol_count].dimension_sizes[i] = dims[i];
+        total_size *= dims[i];
+    }
+    symbol_table[symbol_count].size = total_size;
+    
     symbol_count++;
-    offset_count += n->child->child->brother->child->ivalue;
+    offset_count += total_size;
+
+    // symbol_count++;
+    // offset_count += n->child->child->brother->child->ivalue;
 }
 
 int lookup_symbol_table(char *target_var) {
