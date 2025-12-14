@@ -132,23 +132,11 @@ void get_array_indices(Node *n, Node **indices, int *index_count) {
 }
 
 void register_var(Node *n) {
-    char *name = NULL;
-    int dims[10];
-    int dim_count = 0;
-
-    get_array_info(n->child, dims, &dim_count, &name);
-
-    symbol_table[symbol_count].name = name;
+    symbol_table[symbol_count].name = n->child->variable;
     symbol_table[symbol_count].offset = offset_count * 4;
     symbol_table[symbol_count].is_array = false;
-    symbol_table[symbol_count].dimensions = dim_count;
-
-    int size = 1;
-    for (int i=0; i < dim_count; i++) {
-        symbol_table[symbol_count].dimension_sizes[i] = dims[i];
-        size *= dims[i];
-    }
-    symbol_table[symbol_count].size = size;
+    symbol_table[symbol_count].dimensions = 0;
+    symbol_table[symbol_count].size = 1;
 
     symbol_count++;
     offset_count++;
