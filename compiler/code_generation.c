@@ -208,7 +208,7 @@ void gen_assignment(Node *n) {
         }
         char *name = temp->child->variable;
 
-        int index = lookup_symbol_index(var_name);
+        int index = lookup_symbol_index(name);
         if (index < 0) {
             printf("# No array\n");
             return;
@@ -311,7 +311,7 @@ void gen_array(Node *n) {
     //     return;
     // }
 
-    int index = lookup_symbol_index(var_name);
+    int index = lookup_symbol_index(name);
     if (index < 0) {
         printf("# No array\n");
         return;
