@@ -10,6 +10,8 @@ void gen_header(Node *n);
 void gen_fotter();
 void gen_decl(Node *n);
 void register_array(Node *n);
+void gen_push();
+void gen_pop();
 void gen_assign(Node *n);
 void gen_loop(Node *n);
 void gen_expression(Node *n);
