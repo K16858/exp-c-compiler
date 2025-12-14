@@ -202,17 +202,45 @@ void gen_assignment(Node *n) {
 
         printf("    sw $v0, %d($t0)\n", offset);
     } else {
-        int offset = lookup_symbol_table(n->child->child->variable);
-        if (offset < 0) {
-            printf("No variable\n");
+        Node *temp = n;
+        while (temp->child->type == ARRAY_AST) {
+            temp = temp->child;
+        }
+        char *name = temp->child->variable;
+
+        int index = lookup_symbol_index(var_name);
+        if (index < 0) {
+            printf("# No array\n");
             return;
         }
+        
+        int base_offset = symbol_table[index].offset;
+        int dimensions = symbol_table[index].dimensions;
 
-        gen_code(n->child->child->brother);
+        Node *indices[10];
+        int index_count = 0;
+        get_array_indices(n, indices, &index_count);
+
+        // first index
+        gen_code(indices[0]);
+
+        // calculate offset
+        for (int i = 1; i < index_count; i++) {
+            printf("    ori $v1, $zero, %d\n", symbol_table[index].dimension_sizes[i]);
+            printf("    mult $v0, $v1\n");
+            printf("    mflo $v0\n");
+
+            gen_push();
+            gen_code(indices[i]);
+            printf("    or $v1, $v0, $zero\n");
+            gen_pop();
+            
+            printf("    add $v0, $v0, $v1\n");
+        }
 
         printf("    sll $v0, $v0, 2\n");
-        printf("    addi $v0, $v0, %d\n", offset);
-        printf("    add $v1, $v0, $t0\n");
+        printf("    addi $v0, $v0, %d\n", base_offset);
+        printf("    add $v0, $v0, $t0\n");
 
         gen_code(n->child->brother);
 
