@@ -156,6 +156,15 @@ int lookup_symbol_table(char *target_var) {
     return -1;
 }
 
+int lookup_symbol_index(char *target_var) {
+    for (int i = 0; i < symbol_count; i++) {
+        if (strncmp(symbol_table[i].name, target_var, MAXBUF) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 void gen_decl(Node *n) {
     if (n->child->type == IDENT_AST) {
         register_var(n);
