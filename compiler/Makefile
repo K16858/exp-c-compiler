@@ -8,7 +8,8 @@ lex.yy.c: lexer.l
 	flex lexer.l
 
 test: parser
-	./parser < ./tests/test2.txt > gen_result.s
+	./parser < ./tests/test6.txt > gen_result.s
+	maps -e ./gen_result.s
 
 clean:
 	rm -f parser parser.tab.c parser.tab.h lex.yy.c
