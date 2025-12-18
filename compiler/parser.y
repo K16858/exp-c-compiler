@@ -49,8 +49,6 @@ statement
     {$$ = build_node1(STATEMENT_AST, $1);}
     | if_statement
     {$$ = build_node1(STATEMENT_AST, $1);}
-    | decl_function
-    {$$ = build_node1(STATEMENT_AST, $1);}
     | function
     {$$ = build_node1(STATEMENT_AST, $1);}
 ;
@@ -69,6 +67,8 @@ decl_statement
     {$$ = build_node1(DECL_STATEMENT_AST, build_ident_node(IDENT_AST, $2));}
     | ARRAY array SEMIC
     {$$ = build_node1(DECL_STATEMENT_AST, $2);}
+    | decl_function
+    {$$ = build_node1(DECL_STATEMENT_AST, $1);}
 ;
 var
     : IDENT
