@@ -22,6 +22,9 @@ void gen_number(Node *n);
 void gen_comparison(Node *n);
 void gen_decl_function(Node *n);
 // void gen_function(Node *n);
+void register_var(Node *n);
+void register_array(Node *n);
+void register_function(Node *n);
 void get_array_info(Node *n, int *dims, int *dim_count, char **name);
 void get_array_indices(Node *n, Node **indices, int *index_count);
 int lookup_symbol_table(char *target_var);
@@ -37,8 +40,15 @@ typedef struct {
     bool is_array;
 } Symbol;
 
+typedef struct {
+    char *name;
+    int number;
+} Function;
+
+Function function_table[100];
 Symbol symbol_table[100];
 int symbol_count;
+int function_count;
 int offset_count;
 int if_count;
 int loop_count;
@@ -52,6 +62,7 @@ void print_node(Node *n) {
 
 void init() {
     symbol_count = 0;
+    function_count = 0;
     offset_count = 0;
     if_count = 0;
     loop_count = 0;
@@ -184,6 +195,13 @@ void register_array(Node *n) {
     // offset_count += n->child->child->brother->child->ivalue;
 }
 
+void register_function(Node *n) {
+    function_table[function_count].name = n->child->variable;
+    function_table[function_count].number = function_count;
+
+    function_count++;
+}
+
 int lookup_symbol_table(char *target_var) {
     for (int i=0; i < symbol_count; i++) {
         if (strncmp(symbol_table[i].name, target_var, MAXBUF) == 0) {
@@ -209,6 +227,12 @@ void gen_decl(Node *n) {
     }
     else {
         register_array(n);
+    }
+}
+
+void gen_decl_function(Node *n) {
+    if (n->child->type == IDENT_AST) {
+        register_function(n);
     }
 }
 
