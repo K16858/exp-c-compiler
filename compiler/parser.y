@@ -77,6 +77,8 @@ var
     {$$ = build_num_node(NUMBER_AST, $1);}
     | array
     {$$ = $1;}
+    | function
+    {$$ = $1;}
 ;
 array
     : IDENT L_BRACKET expression R_BRACKET
