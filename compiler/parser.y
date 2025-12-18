@@ -15,7 +15,7 @@
 %token <sp> IDENT
 %token <ival> NUMBER
 %token DEFINE ARRAY IF ELSE LOOP L_PARAN R_PARAN L_BRACKET R_BRACKET L_BRACE R_BRACE EQ LT GT SEMIC ASSIGN ADD SUB MUL DIV COMMA FUNCTION
-%type <np> program decl_function function declarations statements statement loop_statement if_statement decl_statement var array condition assignment_statement expression term factor add_op mul_op cond_op
+%type <np> program decl_function function_call function_expr declarations statements statement loop_statement if_statement decl_statement var array condition assignment_statement expression term factor add_op mul_op cond_op
 
 %%
 program
@@ -26,8 +26,12 @@ decl_function
     : FUNCTION IDENT L_PARAN IDENT R_PARAN L_BRACE statements R_BRACE
     {$$ = build_node2(DECL_FUNCTION_AST, build_node2(IDENT_AST, build_ident_node(IDENT_AST, $2), build_ident_node(IDENT_AST, $4)), $7);}
 ;
-function
+function_call
     : IDENT L_PARAN var R_PARAN SEMIC
+    {$$ = build_node2(FUNCTION_AST, build_ident_node(IDENT_AST, $1), $3);}
+;
+function_expr
+    : IDENT L_PARAN var R_PARAN
     {$$ = build_node2(FUNCTION_AST, build_ident_node(IDENT_AST, $1), $3);}
 ;
 declarations
@@ -49,7 +53,7 @@ statement
     {$$ = build_node1(STATEMENT_AST, $1);}
     | if_statement
     {$$ = build_node1(STATEMENT_AST, $1);}
-    | function
+    | function_call
     {$$ = build_node1(STATEMENT_AST, $1);}
 ;
 loop_statement
@@ -77,7 +81,7 @@ var
     {$$ = build_num_node(NUMBER_AST, $1);}
     | array
     {$$ = $1;}
-    | function
+    | function_expr
     {$$ = $1;}
 ;
 array
