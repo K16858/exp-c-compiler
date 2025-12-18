@@ -72,7 +72,7 @@ decl_statement
     | ARRAY array SEMIC
     {$$ = build_node1(DECL_STATEMENT_AST, $2);}
     | decl_function
-    {$$ = build_node1(DECL_STATEMENT_AST, $1);}
+    {$$ = $1;}
 ;
 var
     : IDENT
