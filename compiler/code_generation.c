@@ -15,6 +15,17 @@ void gen_pop();
 void gen_assign(Node *n);
 void gen_loop(Node *n);
 void gen_expression(Node *n);
+void gen_if(Node *n);
+void gen_array(Node *n);
+void gen_var(Node *n);
+void gen_number(Node *n);
+void gen_comparison(Node *n);
+void gen_decl_function(Node *n);
+// void gen_function(Node *n);
+void get_array_info(Node *n, int *dims, int *dim_count, char **name);
+void get_array_indices(Node *n, Node **indices, int *index_count);
+int lookup_symbol_table(char *target_var);
+int lookup_symbol_index(char *target_var);
 void gen_code(Node *n);
 
 typedef struct {
