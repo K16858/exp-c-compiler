@@ -16,3 +16,5 @@ tree.json
 *~
 .*.swp
 .DS_Store
+
+parser
