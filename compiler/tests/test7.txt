@@ -1,0 +1,6 @@
+define x;
+define a;
+
+func sum(a) {
+    x = x + a;
+}
