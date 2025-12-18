@@ -472,6 +472,9 @@ void gen_code(Node *n) {
         case DECL_STATEMENT_AST:
             gen_decl(n);
             break;
+        case DECL_FUNCTION_AST:
+            gen_decl_function(n);
+            break;
         case ASSIGNMENT_STATEMENT_AST:
             gen_assignment(n);
             break;
