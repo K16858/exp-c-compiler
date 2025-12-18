@@ -196,7 +196,7 @@ void register_array(Node *n) {
 }
 
 void register_function(Node *n) {
-    function_table[function_count].name = n->child->variable;
+    function_table[function_count].name = n->child->child->variable;
     function_table[function_count].number = function_count;
 
     function_count++;
@@ -233,6 +233,7 @@ void gen_decl(Node *n) {
 void gen_decl_function(Node *n) {
     if (n->child->type == IDENT_AST) {
         register_function(n);
+        printf("#    decl %s:\n", n->child->child->variable);
     }
 }
 
