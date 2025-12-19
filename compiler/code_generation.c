@@ -299,6 +299,25 @@ void gen_decl_function(Node *n) {
     }
 }
 
+void gen_function_call(Node *n) {
+    int func_num = lookup_function_table(n->child->variable);
+    
+    if (n->child->brother != NULL) {
+        gen_code(n->child->brother);
+        printf("    or $a0, $v0, $zero\n");
+    }
+    
+    printf("    addi $sp, $sp, -4\n");
+    printf("    sw $ra, 0($sp)\n");
+    
+    printf("    jal FUNCTION_%d\n", func_num);
+    printf("    nop\n");
+    
+    printf("    lw $ra, 0($sp)\n");
+    printf("    nop\n");
+    printf("    addi $sp, $sp, 4\n");
+}
+
 void gen_assignment(Node *n) {
     if (n->child->type == IDENT_AST) {
         int offset = lookup_symbol_table(n->child->variable);
@@ -571,6 +590,9 @@ void gen_code(Node *n) {
         case MUL_OP_AST:
         case DIV_OP_AST:
             gen_expression(n);
+            break;
+        case FUNCTION_AST:
+            gen_function_call(n);
             break;
         default:
             gen_code(n->child);
