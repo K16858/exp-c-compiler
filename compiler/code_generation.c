@@ -202,6 +202,12 @@ void register_function(Node *n) {
     function_count++;
 }
 
+void register_parmeter(Symbol *table[], Node *n) {
+    table[function_count].name = n->variable;
+    table[function_count].number = function_count;
+    function_count++;
+}
+
 int lookup_symbol_table(char *target_var) {
     for (int i=0; i < symbol_count; i++) {
         if (strncmp(symbol_table[i].name, target_var, MAXBUF) == 0) {
@@ -232,8 +238,15 @@ void gen_decl(Node *n) {
 
 void gen_decl_function(Node *n) {
     if (n->child->type == IDENT_AST && n->child->child != NULL) {
-        printf("FUNCTION_%d:\n", function_count); 
+        Symbol local_table[100];
+        // printf("FUNCTION_%d:\n", function_count);
+        
+        printf("    sw $a0, 0($sp)\n");
+        printf("    addi $sp, $sp, -4\n");
+
         gen_code(n->child->brother);
+
+        printf("    addi $sp, $sp, 4\n");
         printf("    jr $ra\n");
         printf("    nop\n");
         register_function(n->child->child);
