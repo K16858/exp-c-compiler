@@ -245,6 +245,15 @@ int lookup_local_table(char *target_var) {
     return -1;
 }
 
+int lookup_function_table(char *target_func) {
+    for (int i = 0; i < function_count; i++) {
+        if (strncmp(function_table[i].name, target_func, MAXBUF) == 0) {
+            return function_table[i].number;
+        }
+    }
+    return -1;
+}
+
 void gen_decl(Node *n) {
     if (n->child->type == IDENT_AST) {
         register_var(n);
