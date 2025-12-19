@@ -1,0 +1,12 @@
+define a;
+
+func sub(x) {
+    if (x>1) {
+        x = x - 1;
+        sub(x);
+    }
+}
+
+a = 1;
+
+a = sub(a);
