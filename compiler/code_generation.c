@@ -541,6 +541,10 @@ void gen_expression(Node *n) {
             printf("    div $v0, $v1\n");
             printf("    mflo $v0\n");
             break;
+        case MOD_OP_AST:
+            printf("    div $v0, $v1\n");
+            printf("    mfhi $v0\n");
+            break;
         default:
             break;
     }
