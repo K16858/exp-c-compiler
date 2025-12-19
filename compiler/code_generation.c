@@ -232,8 +232,12 @@ void gen_decl(Node *n) {
 
 void gen_decl_function(Node *n) {
     if (n->child->type == IDENT_AST) {
+        // printf("#    decl %s:\n", n->child->child->variable);
+        printf("FUNCTION_%d:\n", function_count); 
+        gen_code(n->child->brother);
+        printf("    jr $ra\n");
+        printf("    nop\n");
         register_function(n);
-        printf("#    decl %s:\n", n->child->child->variable);
     }
 }
 
