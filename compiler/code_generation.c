@@ -258,7 +258,7 @@ void gen_decl_function(Node *n) {
         Symbol temp_local_table[100];
         local_table = temp_local_table;
 
-        local_table[0].name = n->child->child->variable;
+        local_table[0].name = n->child->child->brother->variable;
         local_table[0].offset = 0;
         local_table[0].is_array = false;
         local_table[0].dimensions = 0;
