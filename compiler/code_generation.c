@@ -277,8 +277,8 @@ void gen_decl_function(Node *n) {
 
         printf("FUNCTION_%d:\n", function_count);
         
-        printf("    sw $a0, 0($sp)\n");
         printf("    addi $sp, $sp, -4\n");
+        printf("    sw $a0, 0($sp)\n");
 
         gen_code(n->child->brother);
 
