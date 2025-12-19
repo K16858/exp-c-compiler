@@ -159,7 +159,7 @@ void get_array_indices(Node *n, Node **indices, int *index_count) {
 }
 
 void register_var(Node *n) {
-    symbol_table[symbol_count].name = n->child->variable;
+    symbol_table[symbol_count].name = n->variable;
     symbol_table[symbol_count].offset = offset_count * 4;
     symbol_table[symbol_count].is_array = false;
     symbol_table[symbol_count].dimensions = 0;
@@ -256,9 +256,18 @@ int lookup_function_table(char *target_func) {
 
 void gen_decl(Node *n) {
     if (n->child->type == IDENT_AST) {
-        register_var(n);
+        if (n->child->brother != NULL) {
+            register_var(n->child->brother);
+        }
+        register_var(n->child);
+    } 
+    else if (n->child->type == IDENTS_AST) {
+        if (n->child->brother != NULL) {
+            register_var(n->child->brother);
+        }
+        gen_decl(n->child);
     }
-    else {
+    else if (n->child->type == ARRAY_AST) {
         register_array(n);
     }
 }
