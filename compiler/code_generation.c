@@ -54,6 +54,7 @@ int function_count;
 int offset_count;
 int if_count;
 int loop_count;
+int parameter_count;
 int bytes;
 
 void print_node(Node *n) {
@@ -70,6 +71,7 @@ void init() {
     offset_count = 0;
     if_count = 0;
     loop_count = 0;
+    parameter_count = 0;
     bytes = 0;
     local_table = NULL;
     local_count = 0;
@@ -302,16 +304,21 @@ void gen_decl_function(Node *n) {
         // local_table[0].size = 1;
         // local_count = 1;
 
-        register_parmeter(n->child->child->brother);
-
         printf("FUNCTION_%d:\n", function_count);
+        register_parmeter(n->child->child->brother);
         
         printf("    addi $sp, $sp, -4\n");
         printf("    sw $a0, 0($sp)\n");
+        printf("    addi $sp, $sp, -4\n");
+        printf("    sw $a1, 0($sp)\n");
+        printf("    addi $sp, $sp, -4\n");
+        printf("    sw $a2, 0($sp)\n");
+        printf("    addi $sp, $sp, -4\n");
+        printf("    sw $a3, 0($sp)\n");
 
         gen_code(n->child->brother);
 
-        printf("    addi $sp, $sp, 4\n");
+        printf("    addi $sp, $sp, 16\n");
         printf("    jr $ra\n");
         printf("    nop\n");
 
@@ -328,12 +335,34 @@ void gen_decl_function(Node *n) {
     }
 }
 
+void gen_function_parameter(Node *n) {
+    if (parameter_count > 3) {
+        return;
+    }
+    if(n->child != NULL && n->child->type == VARS_AST) {
+        gen_function_parameter(n->child);
+        gen_var(n->child->brother);
+        printf("    or $a%d, $v0, $zero\n", parameter_count);
+        parameter_count++;
+    } else {
+        if (n->child != NULL && n->child->type == IDENT_AST){
+            gen_var(n->child);
+            printf("    or $a%d, $v0, $zero\n", parameter_count);
+            parameter_count++;
+        }
+        if (n->child->brother != NULL && n->child->brother->type == IDENT_AST) {
+            gen_var(n->child->brother);
+            printf("    or $a%d, $v0, $zero\n", parameter_count);
+            parameter_count++;
+        }
+    }
+}
+
 void gen_function_call(Node *n) {
     int func_num = lookup_function_table(n->child->variable);
     
     if (n->child->brother != NULL) {
-        gen_code(n->child->brother);
-        printf("    or $a0, $v0, $zero\n");
+        gen_function_parameter(n->child->brother);
     }
     
     printf("    addi $sp, $sp, -4\n");
