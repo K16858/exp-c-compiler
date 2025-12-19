@@ -5,4 +5,8 @@ func sum(a) {
     x = x + a;
 }
 
+func sub() {
+    x = x - 1;
+}
+
 a = 1;
