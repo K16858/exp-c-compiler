@@ -59,6 +59,8 @@ int bytes;
 void print_node(Node *n) {
     if (n != NULL) {
         printf("type: %s\n", node_types[n->type]);
+    } else {
+        printf("NULL\n");
     }
 }
 
@@ -207,11 +209,27 @@ void register_function(Node *n) {
     function_count++;
 }
 
-// void register_parmeter(Node *n) {
-//     local_table[local_count].name = n->variable;
-//     local_table[local_count].number = local_count;
-//     local_count++;
-// }
+void register_parmeter(Node *n) {
+    if(n->child != NULL && n->child->type == IDENTS_AST) {
+        register_parmeter(n->child);
+    }
+    if (n->child->brother != NULL && n->child->brother->type == IDENT_AST) {
+        local_table[local_count].name = n->child->brother->variable;
+        local_table[local_count].offset = local_count * 4;
+        local_table[local_count].is_array = false;
+        local_table[local_count].dimensions = 0;
+        local_table[local_count].size = 1;
+        local_count += 1;
+    }
+    if (n->child != NULL && n->child->type == IDENT_AST){
+        local_table[local_count].name = n->child->variable;
+        local_table[local_count].offset = local_count * 4;
+        local_table[local_count].is_array = false;
+        local_table[local_count].dimensions = 0;
+        local_table[local_count].size = 1;
+        local_count += 1;
+    }
+}
 
 int lookup_symbol_table(char *target_var) {
     for (int i=0; i < symbol_count; i++) {
@@ -277,12 +295,14 @@ void gen_decl_function(Node *n) {
         Symbol temp_local_table[100];
         local_table = temp_local_table;
 
-        local_table[0].name = n->child->child->brother->variable;
-        local_table[0].offset = 0;
-        local_table[0].is_array = false;
-        local_table[0].dimensions = 0;
-        local_table[0].size = 1;
-        local_count = 1;
+        // local_table[0].name = n->child->child->brother->variable;
+        // local_table[0].offset = 0;
+        // local_table[0].is_array = false;
+        // local_table[0].dimensions = 0;
+        // local_table[0].size = 1;
+        // local_count = 1;
+
+        register_parmeter(n->child->child->brother);
 
         printf("FUNCTION_%d:\n", function_count);
         
