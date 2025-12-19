@@ -1,5 +1,5 @@
-define x;
 define a;
+define x;
 
 func sum(a) {
     x = x + a;
@@ -9,4 +9,6 @@ func sub() {
     x = x - 1;
 }
 
+x = 10;
 a = 1;
+a = sum(a);
