@@ -47,6 +47,8 @@ typedef struct {
 
 Function function_table[100];
 Symbol symbol_table[100];
+Symbol *local_table;
+int local_count;
 int symbol_count;
 int function_count;
 int offset_count;
@@ -67,6 +69,8 @@ void init() {
     if_count = 0;
     loop_count = 0;
     bytes = 0;
+    local_table = NULL;
+    local_count = 0;
 }
 
 void gen_header(Node *n) {
@@ -202,11 +206,11 @@ void register_function(Node *n) {
     function_count++;
 }
 
-void register_parmeter(Symbol *table[], Node *n) {
-    table[function_count].name = n->variable;
-    table[function_count].number = function_count;
-    function_count++;
-}
+// void register_parmeter(Node *n) {
+//     local_table[local_count].name = n->variable;
+//     local_table[local_count].number = local_count;
+//     local_count++;
+// }
 
 int lookup_symbol_table(char *target_var) {
     for (int i=0; i < symbol_count; i++) {
@@ -227,6 +231,19 @@ int lookup_symbol_index(char *target_var) {
     return -1;
 }
 
+int lookup_local_table(char *target_var) {
+    if (local_table == NULL) {
+        return -1;
+    }
+    
+    for (int i = 0; i < local_count; i++) {
+        if (strncmp(local_table[i].name, target_var, MAXBUF) == 0) {
+            return local_table[i].offset;
+        }
+    }
+    return -1;
+}
+
 void gen_decl(Node *n) {
     if (n->child->type == IDENT_AST) {
         register_var(n);
@@ -238,8 +255,17 @@ void gen_decl(Node *n) {
 
 void gen_decl_function(Node *n) {
     if (n->child->type == IDENT_AST && n->child->child != NULL) {
-        Symbol local_table[100];
-        // printf("FUNCTION_%d:\n", function_count);
+        Symbol temp_local_table[100];
+        local_table = temp_local_table;
+
+        local_table[0].name = n->child->child->variable;
+        local_table[0].offset = 0;
+        local_table[0].is_array = false;
+        local_table[0].dimensions = 0;
+        local_table[0].size = 1;
+        local_count = 1;
+
+        printf("FUNCTION_%d:\n", function_count);
         
         printf("    sw $a0, 0($sp)\n");
         printf("    addi $sp, $sp, -4\n");
@@ -249,6 +275,10 @@ void gen_decl_function(Node *n) {
         printf("    addi $sp, $sp, 4\n");
         printf("    jr $ra\n");
         printf("    nop\n");
+
+        local_table = NULL;
+        local_count = 0;
+
         register_function(n->child->child);
     } else {
         printf("FUNCTION_%d:\n", function_count); 
@@ -420,6 +450,13 @@ void gen_array(Node *n) {
 }
 
 void gen_var(Node *n) {
+    int local_offset = lookup_local_table(n->variable);
+    if (local_offset >= 0) {
+        printf("    lw $v0, %d($sp)\n", local_offset + 4);
+        printf("    nop\n");
+        return;
+    }
+
     int offset = lookup_symbol_table(n->variable);
     printf("    lw $v0, %d($t0)\n", offset);
     printf("    nop\n");
