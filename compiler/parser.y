@@ -15,7 +15,7 @@
 %token <sp> IDENT
 %token <ival> NUMBER
 %token DEFINE ARRAY IF ELSE LOOP L_PARAN R_PARAN L_BRACKET R_BRACKET L_BRACE R_BRACE EQ LT GT SEMIC ASSIGN ADD SUB MUL DIV MOD COMMA FUNCTION
-%type <np> program decl_function function_call function_expr declarations statements statement loop_statement if_statement decl_statement var array condition assignment_statement expression term factor add_op mul_op cond_op
+%type <np> program decl_function function_call function_expr declarations statements statement loop_statement if_statement decl_statement var array condition assignment_statement expression term factor add_op mul_op cond_op idents
 
 %%
 program
@@ -25,6 +25,8 @@ program
 decl_function
     : FUNCTION IDENT L_PARAN IDENT R_PARAN L_BRACE statements R_BRACE
     {$$ = build_node2(DECL_FUNCTION_AST, build_node2(IDENT_AST, build_ident_node(IDENT_AST, $2), build_ident_node(IDENT_AST, $4)), $7);}
+    | FUNCTION IDENT L_PARAN idents R_PARAN L_BRACE statements R_BRACE
+    {$$ = build_node2(DECL_FUNCTION_AST, build_node2(IDENT_AST, build_ident_node(IDENT_AST, $2), $4), $7);}
     | FUNCTION IDENT L_PARAN R_PARAN L_BRACE statements R_BRACE
     {$$ = build_node2(DECL_FUNCTION_AST, build_ident_node(IDENT_AST, $2), $6);}
 ;
@@ -71,6 +73,8 @@ if_statement
 decl_statement
     : DEFINE IDENT SEMIC
     {$$ = build_node1(DECL_STATEMENT_AST, build_ident_node(IDENT_AST, $2));}
+    | DEFINE idents SEMIC
+    {$$ = build_node1(DECL_STATEMENT_AST, $2);}
     | ARRAY array SEMIC
     {$$ = build_node1(DECL_STATEMENT_AST, $2);}
     | decl_function
@@ -86,6 +90,12 @@ var
     | function_expr
     {$$ = $1;}
 ;
+idents
+    : idents COMMA IDENT
+    {$$ = build_node2(IDENTS_AST, $1, build_ident_node(IDENT_AST, $3));}
+    | IDENT COMMA IDENT
+    {$$ = build_node2(IDENTS_AST, build_ident_node(IDENT_AST, $1), build_ident_node(IDENT_AST, $3));}
+
 array
     : IDENT L_BRACKET expression R_BRACKET
     {$$ = build_node2(ARRAY_AST, build_ident_node(IDENT_AST, $1), build_node1(EXPRESSION_AST, $3));}
