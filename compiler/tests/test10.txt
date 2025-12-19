@@ -4,4 +4,9 @@ func sum(a, b, c, d) {
     a = a + b + c + d;
 }
 
+a = 1;
+b = 1;
+c = 1;
+d = 1;
+
 a = sum(a, b, c, d);
