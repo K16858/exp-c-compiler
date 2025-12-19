@@ -96,12 +96,13 @@ void gen_header(Node *n) {
         "    j stop # infinite loop...\n"
         "    nop # (delay slot)\n"
         "\n"
-        ".text 0x00001000 # 以降のコードを 0から配置 x00001000\n"
-        "main:\n"
-        "    la $t0, RESULT";
+        ".text 0x00001000 # 以降のコードを 0から配置 x00001000\n";
     printf("%s\n", code);
 
     gen_code(n->child);
+    code = "main:\n"
+           "    la $t0, RESULT";
+    printf("%s\n", code);
     gen_code(n->child->brother);
 
     gen_fotter();
