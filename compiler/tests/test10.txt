@@ -1,0 +1,7 @@
+define a, b, c, d;
+
+func sum(a, b, c, d) {
+    a = a + b + c + d;
+}
+
+a = sum(a, b, c, d);
