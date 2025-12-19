@@ -132,7 +132,7 @@ mul_op
     | DIV
     {$$ = build_node0(DIV_OP_AST);}
     | MOD
-    {$$ = build_node0(MOD_OP_AST)}
+    {$$ = build_node0(MOD_OP_AST);}
 ;
 cond_op
     : EQ
