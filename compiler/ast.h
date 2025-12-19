@@ -17,6 +17,7 @@ typedef enum{
     LT_OP_AST,
     GT_OP_AST,
     VAR_AST,
+    VARS_AST,
     ARRAY_AST,
     CONDITION_AST,
     FACTOR_AST,

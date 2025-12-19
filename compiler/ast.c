@@ -85,6 +85,7 @@ char *node_types[] = {
     "LT_OP",
     "GT_OP",
     "VAR",
+    "VARS",
     "ARRAY",
     "CONDITION",
     "FACTOR",

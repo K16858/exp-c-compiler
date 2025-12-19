@@ -15,7 +15,7 @@
 %token <sp> IDENT
 %token <ival> NUMBER
 %token DEFINE ARRAY IF ELSE LOOP L_PARAN R_PARAN L_BRACKET R_BRACKET L_BRACE R_BRACE EQ LT GT SEMIC ASSIGN ADD SUB MUL DIV MOD COMMA FUNCTION
-%type <np> program decl_function function_call function_expr declarations statements statement loop_statement if_statement decl_statement var array condition assignment_statement expression term factor add_op mul_op cond_op idents
+%type <np> program decl_function function_call function_expr declarations statements statement loop_statement if_statement decl_statement var array condition assignment_statement expression term factor add_op mul_op cond_op idents vars
 
 %%
 program
@@ -33,10 +33,18 @@ decl_function
 function_call
     : IDENT L_PARAN var R_PARAN SEMIC
     {$$ = build_node2(FUNCTION_AST, build_ident_node(IDENT_AST, $1), $3);}
+    | IDENT L_PARAN vars R_PARAN SEMIC
+    {$$ = build_node2(FUNCTION_AST, build_ident_node(IDENT_AST, $1), $3);}
+    | IDENT L_PARAN R_PARAN SEMIC
+    {$$ = build_node1(FUNCTION_AST, build_ident_node(IDENT_AST, $1));}
 ;
 function_expr
     : IDENT L_PARAN var R_PARAN
     {$$ = build_node2(FUNCTION_AST, build_ident_node(IDENT_AST, $1), $3);}
+    | IDENT L_PARAN vars R_PARAN
+    {$$ = build_node2(FUNCTION_AST, build_ident_node(IDENT_AST, $1), $3);}
+    | IDENT L_PARAN R_PARAN
+    {$$ = build_node1(FUNCTION_AST, build_ident_node(IDENT_AST, $1));}
 ;
 declarations
     : decl_statement declarations
@@ -90,12 +98,18 @@ var
     | function_expr
     {$$ = $1;}
 ;
+vars
+    : vars COMMA var
+    {$$ = build_node2(VARS_AST, $1, $3);}
+    | var COMMA var
+    {$$ = build_node2(VARS_AST, $1, $3);}
+;
 idents
     : idents COMMA IDENT
     {$$ = build_node2(IDENTS_AST, $1, build_ident_node(IDENT_AST, $3));}
     | IDENT COMMA IDENT
     {$$ = build_node2(IDENTS_AST, build_ident_node(IDENT_AST, $1), build_ident_node(IDENT_AST, $3));}
-
+;
 array
     : IDENT L_BRACKET expression R_BRACKET
     {$$ = build_node2(ARRAY_AST, build_ident_node(IDENT_AST, $1), build_node1(EXPRESSION_AST, $3));}
