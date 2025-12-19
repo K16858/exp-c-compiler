@@ -146,9 +146,11 @@ int main(int argc, char *args[]) {
     }
     // AST生成完了
     // printf("[*] AST generation is completed\n");
-    if (argc > 0 && strncmp(args[0], "-t", 3)) {
+    if (argc > 1) {
         // AST表示
-        print_tree_in_json(top);
+        if (strncmp(args[1], "-t", 3)==0) {
+            print_tree_in_json(top);
+        }
     } else {
         // コード生成
         gen_code(top);
