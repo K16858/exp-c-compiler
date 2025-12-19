@@ -1,0 +1,7 @@
+define a;
+define x;
+
+a = 10;
+x = 3;
+
+x = a % x;
