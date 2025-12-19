@@ -1,0 +1,7 @@
+define a, b, c, d;
+
+a = 1;
+b = 1;
+c = 1;
+d = a + b + c;
+a = d;
