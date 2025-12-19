@@ -1,0 +1,30 @@
+func quicksort(a[], l, r){
+    define v, i, j, t;
+    define ii;
+    if (r > l){
+        v = a[r]; i = l - 1; j = r;
+        while{
+            while(a[++i] < v);
+            while(a[--j] > v);
+            if (i >= j) { break; }
+            t = a[i]; a[i] = a[j]; a[j] = t;
+        }
+        t = a[i]; a[i] = a[r]; a[r] = t;
+        quicksort(a, l, i-1);
+        quicksort(a, i+1, r);
+    }
+}
+func main(){
+    array data[10];
+    data[0] = 10;
+    data[1] = 4;
+    data[2] = 2;
+    data[3] = 7;
+    data[4] = 3;
+    data[5] = 5;
+    data[6] = 9;
+    data[7] = 10;
+    data[8] = 1;
+    data[9] = 8;
+    quicksort(data, 0, 9);
+}
