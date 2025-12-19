@@ -12,6 +12,7 @@ typedef enum{
     SUB_OP_AST,
     MUL_OP_AST,
     DIV_OP_AST,
+    MOD_OP_AST,
     EQ_OP_AST,
     LT_OP_AST,
     GT_OP_AST,

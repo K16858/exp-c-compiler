@@ -22,6 +22,7 @@ func              {return FUNCTION;}
 "-"                    {return SUB;}
 "*"                    {return MUL;}
 "/"                    {return DIV;}
+"%"                    {return MOD;}
 ,                    {return COMMA;}
 ;                    {return SEMIC;}
 [a-zA-Z][a-zA-Z0-9]* {

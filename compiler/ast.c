@@ -80,6 +80,7 @@ char *node_types[] = {
     "SUB_OP",
     "MUL_OP",
     "DIV_OP",
+    "MOD_OP",
     "EQ_OP",
     "LT_OP",
     "GT_OP",

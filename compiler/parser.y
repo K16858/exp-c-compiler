@@ -14,7 +14,7 @@
 
 %token <sp> IDENT
 %token <ival> NUMBER
-%token DEFINE ARRAY IF ELSE LOOP L_PARAN R_PARAN L_BRACKET R_BRACKET L_BRACE R_BRACE EQ LT GT SEMIC ASSIGN ADD SUB MUL DIV COMMA FUNCTION
+%token DEFINE ARRAY IF ELSE LOOP L_PARAN R_PARAN L_BRACKET R_BRACKET L_BRACE R_BRACE EQ LT GT SEMIC ASSIGN ADD SUB MUL DIV MOD COMMA FUNCTION
 %type <np> program decl_function function_call function_expr declarations statements statement loop_statement if_statement decl_statement var array condition assignment_statement expression term factor add_op mul_op cond_op
 
 %%
@@ -131,6 +131,8 @@ mul_op
     {$$ = build_node0(MUL_OP_AST);}
     | DIV
     {$$ = build_node0(DIV_OP_AST);}
+    | MOD
+    {$$ = build_node0(MOD_OP_AST)}
 ;
 cond_op
     : EQ
