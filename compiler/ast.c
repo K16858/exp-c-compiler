@@ -139,16 +139,19 @@ void print_tree_in_json(Node *n) {
     }
 }
 
-int main(void) {
+int main(int argc, char *args[]) {
     if (yyparse()) {
         fprintf(stderr, "Error!\n");
         return 1;
     }
     // AST生成完了
     // printf("[*] AST generation is completed\n");
-    // AST表示
-    // print_tree_in_json(top);
-    // コード生成
-    gen_code(top);
+    if (argc > 0 && strncmp(args[0], "-t", 3)) {
+        // AST表示
+        print_tree_in_json(top);
+    } else {
+        // コード生成
+        gen_code(top);
+    }
     return 0;
 }
